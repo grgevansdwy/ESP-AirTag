@@ -6,15 +6,39 @@
 // Your custom UUIDs — must match the peripheral
 #define SERVICE_UUID "275dc6e0-dff5-4b56-9af0-584a5768a02a"
 #define TX_CHAR_UUID "b51bd845-2910-4f84-b062-d297ed286b1f"
+#define LIGHT_CHAR_UUID "0679c389-0d92-4604-aac4-664c43a51934"
 
 // Convert to BLEUUID so comparisons are easy
 static BLEUUID svcUUID(SERVICE_UUID);
 static BLEUUID txUUID(TX_CHAR_UUID);
+static BLEUUID lightUUID(LIGHT_CHAR_UUID);
 
 volatile bool connected = false;
 
 BLEClient* client = nullptr;
 BLERemoteCharacteristic* txRemoteChar = nullptr;
+BLERemoteCharacteristic* lightRemoteChar = nullptr;
+
+
+// ===== Distance estimation parameters =====
+float rssiAvg = 0.0;
+bool hasAvg = false;
+const float txPower = -59.0; // Calibrate: RSSI at 1 meter
+const float nFactor = 2.5;   // Path loss exponent (2.0 free space, 2.7–4 indoors)
+
+void updateRssiAvg(int rssi) {
+  const float alpha = 0.2f; // smoothing factor
+  if (!hasAvg) {
+    rssiAvg = rssi;
+    hasAvg = true;
+  } else {
+    rssiAvg = alpha * rssi + (1.0f - alpha) * rssiAvg;
+  }
+}
+
+float estimateDistanceMeters(float rssi, float txPower, float n) {
+  return pow(10.0f, (txPower - rssi) / (10.0f * n));
+}
 
 // Notification callback: prints incoming bytes
 void onNotify(BLERemoteCharacteristic* /*pRemoteCharacteristic*/,
@@ -22,6 +46,7 @@ void onNotify(BLERemoteCharacteristic* /*pRemoteCharacteristic*/,
               size_t length,
               bool /*isNotify*/) {
   Serial.write(pData, length);
+  Serial.println("");
 }
 
 bool connectToPeripheral(BLEAddress addr) {
@@ -52,8 +77,21 @@ bool connectToPeripheral(BLEAddress addr) {
     return false;
   }
 
+  lightRemoteChar = service->getCharacteristic(lightUUID);
+  if (!lightRemoteChar) {
+    Serial.println("Light characteristic not found.");
+    client->disconnect();
+    return false;
+  }
+
   if (!txRemoteChar->canNotify()) {
     Serial.println("TX char does not support notify.");
+    client->disconnect();
+    return false;
+  }
+
+  if (!lightRemoteChar->canNotify()) {
+    Serial.println("Light char does not support notify.");
     client->disconnect();
     return false;
   }
@@ -61,6 +99,7 @@ bool connectToPeripheral(BLEAddress addr) {
   // 3) SUBSCRIBE TO NOTIFICATIONS
   // ESP32 core 3.x: registerForNotify returns void (not bool)
   txRemoteChar->registerForNotify(onNotify); // enables CCCD + stores callback
+  lightRemoteChar->registerForNotify(onNotify); // enables CCCD + stores callback
 
   connected = true;
   Serial.println("Connected and subscribed. Waiting for messages...");
@@ -95,12 +134,14 @@ void setup() {
   }
 }
 
+int startTime = millis();
 void loop() {
   // Auto-reconnect if disconnected
   if (connected && client && !client->isConnected()) {
     Serial.println("Disconnected. Rescanning...");
     connected = false;
     txRemoteChar = nullptr;
+    lightRemoteChar = nullptr;
     client->disconnect();
 
     BLEScan* scan = BLEDevice::getScan();
@@ -114,6 +155,13 @@ void loop() {
       }
       if (!connected) Serial.println("Still searching...");
     }
+  }
+  if (connected && client && client->isConnected() && startTime - millis() > 2000) {
+    startTime = millis();
+    int rssi = client->getRssi();
+    updateRssiAvg(rssi); // smoothen the rssi
+    float distance = estimateDistanceMeters(rssiAvg, txPower, nFactor); // convert rssi to distance
+    //Serial.printf("Raw RSSI: %d dBm | Smoothed RSSI: %.2f dBm | Distance: %.2f m\n", rssi, rssiAvg, distance);
   }
 
   delay(50);

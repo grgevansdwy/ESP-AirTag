@@ -3,13 +3,18 @@
 #include <BLEUtils.h> // BLE helpers such as UUID handling
 #include <BLE2902.h> // Descriptor class for Client Characteristic Configuration Descriptor (CCCD).
 
+#define LDR_PIN 4
+
 #define SERVICE_UUID "275dc6e0-dff5-4b56-9af0-584a5768a02a" //service UUID
-#define TX_CHAR_UUID "b51bd845-2910-4f84-b062-d297ed286b1f" // server to client notification
+#define TX_CHAR_UUID "b51bd845-2910-4f84-b062-d297ed286b1f" // char serial monitor
+#define LIGHT_CHAR_UUID "0679c389-0d92-4604-aac4-664c43a51934" // char LDR
 
 // Global Objexts
 BLECharacteristic* txChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
+BLECharacteristic* lightChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
 BLEServer* server; // pointer to profile/server (multiple services, connection handling)
 volatile bool deviceConnected = false; // track whether the central is connected
+char str[6];
 
 // this is an override of a virtual function BLEServerCallBacks from the BLE Library that looks like this,
 // virtual void onConnect(BLEServer* pServer) {}
@@ -53,6 +58,13 @@ void setup() {
   );
   // Add the descriptor for CCCD to be able to subscribe/unsubscribe to notification
   txChar->addDescriptor(new BLE2902());
+  // add photoresistor char
+  lightChar = service->createCharacteristic(
+    LIGHT_CHAR_UUID,
+    BLECharacteristic::PROPERTY_NOTIFY
+  );
+  // Add the descriptor for CCCD to be able to subscribe/unsubscribe to notification
+  lightChar->addDescriptor(new BLE2902());
 
   // 3. Advertise
   // Enable the service (giving the all the data to the server)
@@ -83,6 +95,16 @@ void notifyChunks(uint8_t* data, size_t len) {
   }
 }
 
+uint16_t readPhoto() {
+  // Simple single read; you can average several reads for stability
+  int raw = analogRead(LDR_PIN);      // 0..4095 on ESP32
+  if (raw < 0) raw = 0;
+  if (raw > 4095) raw = 4095;
+  return (uint16_t)raw;
+}
+
+unsigned long now; 
+unsigned long lastTime = 0;
 void loop() {
   // You could periodically update the value here
   // the line string
@@ -110,4 +132,18 @@ void loop() {
       }
     }
   }
+
+  now = millis();
+  if(deviceConnected && (now - lastTime > 1000)){
+    lastTime = now;
+    uint16_t val = readPhoto();
+    sprintf(str, "%d", val);
+    lightChar->setValue((uint8_t*)&str, strlen(str));
+    lightChar->notify();
+    Serial.print("Light raw = ");
+    Serial.write(str, strlen(str));
+    Serial.println("");
+
+  }
+  delay(5);
 }
