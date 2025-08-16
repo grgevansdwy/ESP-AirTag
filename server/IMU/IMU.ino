@@ -10,6 +10,7 @@ float previousTime;
 float currentTime;
 float elapsedTime;
 float printTime;
+bool movement = false;
 
 float xErrGy, yErrGy, zErrGy;
 float xErrAc, yErrAc, zErrAc;
@@ -23,7 +24,10 @@ float linAccX, linAccY, linAccZ;
 
 float linMag;
 
-float buffer[5];
+float buffer[32] = {0};
+float sum = 0;
+float avg = 0;
+int i = 0;
 
 void setup() {  
   Serial.begin(115200);
@@ -72,37 +76,45 @@ void loop() {
   if (buffer[i+1] != 0)
     sum -= buffer[i];
   
-  buffer[i] = value;
+  buffer[i] = linMag;
   sum += buffer[i];
   
   // Move to next position in circular buffer (wraps around at 5)
-  i = (i+1) % 5;
+  i = (i+1) % 32;
   
   // Calculate simple moving average of last 5 readings
-  avg = sum / 5;
-  
-  if (currentTime - printTime >= 1000) {
-    Serial.print("X-Acceleration: ");
-    Serial.println(imu_data->AccX);
-    Serial.print("X-Gyroscope: ");
-    Serial.println(imu_data->GyroX);
-    Serial.print("Y-Acceleration: ");
-    Serial.println(imu_data->AccY);
-    Serial.print("Y-Gyroscope: ");
-    Serial.println(imu_data->GyroY);
-    Serial.println();
+  avg = sum / 32;
+    // Serial.print("X-Acceleration: ");
+    // Serial.println(imu_data->AccX);
+    // Serial.print("X-Gyroscope: ");
+    // Serial.println(imu_data->GyroX);
+    // Serial.print("Y-Acceleration: ");
+    // Serial.println(imu_data->AccY);
+    // Serial.print("Y-Gyroscope: ");
+    // Serial.println(imu_data->GyroY);
+    // Serial.println();
 
-    Serial.print("roll: ");
-    Serial.println(roll);
-    Serial.print("pitch: ");
-    Serial.println(pitch);
-    Serial.print("yaw: ");
-    Serial.println(yaw);
-    Serial.println();
+    // Serial.print("roll: ");
+    // Serial.println(roll);
+    // Serial.print("pitch: ");
+    // Serial.println(pitch);
+    // Serial.print("yaw: ");
+    // Serial.println(yaw);
+    // Serial.println();
 
-    Serial.print("linear magnitude acceleration: ");
-    Serial.println(linMag);
-    printTime = currentTime;
+    // Serial.print("linear magnitude acceleration: ");
+    // Serial.println(linMag);
+    // Serial.print("linear magnitude acceleration moving average: ");
+    // Serial.println(avg);
+    // Serial.println();
+
+  if (avg >= 0.5 && !movement) {
+    Serial.println("movement detected!");
+    movement = true;
+  }
+
+  if (avg <= 0.05) {
+    movement = false;
   }
 
 }

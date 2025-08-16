@@ -20,20 +20,6 @@ void imu_read_accel(float* xAccel, float xErr, float* yAccel, float yErr, float*
     *zAccel = (int16_t)(Wire.read() << 8 | Wire.read())/16384.0 - zErr;
 }
 
-void imu_read_mag(float* xMag, float* yMag, float* zMag) {
-    Wire.beginTransmission(0x0C);
-    Wire.write(0x03);
-    Wire.endTransmission(false);
-    Wire.requestFrom(0x0C, 6, true);
-    int16_t x = (int16_t)(Wire.read() | (Wire.read() << 8));
-    int16_t y = (int16_t)(Wire.read() | (Wire.read() << 8));
-    int16_t z = (int16_t)(Wire.read() | (Wire.read() << 8));
-
-    *xMag = x * 0.6f;
-    *yMag = y * 0.6f;
-    *zMag = z * 0.6f;
-}
-
 void imu_read_gyro(float* xGyro,float xErr, float* yGyro, float yErr, float* zGyro, float zErr) {
     Wire.beginTransmission(0x68);
     Wire.write(REG_GYRO_XOUT_H);
@@ -75,20 +61,4 @@ void imu_i2c(void) {
   Wire.write(REG_PWR_MGMT_1);
   Wire.write(0x00);
   Wire.endTransmission(true);
-}
-
-void imu_config_magno(void) {
-Wire.beginTransmission(0x68);
-  Wire.write(0x37);
-  Wire.write(0x02);
-  Wire.endTransmission(true);
-
-  Wire.beginTransmission(0x0C);                       // Open session with AK8963
-  Wire.write(0x0A);                                   // CNTL[3:0] mode bits
-  Wire.write(0b00011111);                                           // Output data=16-bits; Access fuse ROM
-  Wire.endTransmission();
-
-  Wire.beginTransmission(0x0C);                       // Open session with AK8963
-  Wire.write(0x10);                                      // Point to AK8963 fuse ROM
-  Wire.endTransmission();
 }
