@@ -115,6 +115,15 @@
 #define REG_ZA_OFFSET_H           0x7D
 #define REG_ZA_OFFSET_L           0x7E
 
+// Magnetometer Outputs
+#define REG_MAG_XOUT_H            0x03
+#define REG_MAG_XOUT_L            0x04
+#define REG_MAG_YOUT_H            0x05
+#define REG_MAG_YOUT_L            0x06
+#define REG_MAG_ZOUT_H            0x07
+#define REG_MAG_ZOUT_L            0x08
+
+
 /**############################# Common Values #############################**/
 #define WHO_AM_I_MPU6500          0x70  // Expected WHO_AM_I response for MPU-6500
 #define WHO_AM_I_MPU9250          0x71  // Expected for MPU-9250

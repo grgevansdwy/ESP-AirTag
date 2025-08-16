@@ -1,7 +1,5 @@
 struct imu{
     float AccX, AccY, AccZ; 
     float GyroX, GyroY, GyroZ;
-    bool isMoving;
+    float MagX, MagY, MagZ;
 };
-
-struct imu* imu_init(void);

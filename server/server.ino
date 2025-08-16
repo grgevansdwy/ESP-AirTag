@@ -8,10 +8,12 @@
 #define SERVICE_UUID "275dc6e0-dff5-4b56-9af0-584a5768a02a" //service UUID
 #define TX_CHAR_UUID "b51bd845-2910-4f84-b062-d297ed286b1f" // char serial monitor
 #define LIGHT_CHAR_UUID "0679c389-0d92-4604-aac4-664c43a51934" // char LDR
+#define IMU_CHAR_UUID "563a411a-0599-41bf-ae77-2e3457964dbe" // IMU UUID
 
 // Global Objexts
 BLECharacteristic* txChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
 BLECharacteristic* lightChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
+BLECharacteristic* imuChar;
 BLEServer* server; // pointer to profile/server (multiple services, connection handling)
 volatile bool deviceConnected = false; // track whether the central is connected
 char str[6];
@@ -65,6 +67,13 @@ void setup() {
   );
   // Add the descriptor for CCCD to be able to subscribe/unsubscribe to notification
   lightChar->addDescriptor(new BLE2902());
+
+  imuChar = service->createCharacteristic(
+    IMU_CHAR_UUID,
+    BLECharacteristic::PROPERTY_NOTIFY
+  );
+
+  imuChar->addDescriptor(new BLE2902());
 
   // 3. Advertise
   // Enable the service (giving the all the data to the server)
