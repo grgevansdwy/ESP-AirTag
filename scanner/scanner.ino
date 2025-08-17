@@ -15,6 +15,9 @@
 // ---- HELPER FUNCTIONS -----
 #include "BLEScanner.h"
 
+// ---- LCD DISPLAY
+#include <LiquidCrystal_I2C.h>
+
 // ==============================================
 // UUID
 // ==============================================
@@ -64,6 +67,7 @@ SemaphoreHandle_t btnSemaphore;
 // BLERemoteCharacteristic* imuRemoteChar = nullptr;
 //bool connected = false;
 uint32_t startTime;
+LiquidCrystal_I2C lcd(0x27, 16, 2); 
 
 // ==============================================
 // Task
@@ -147,6 +151,16 @@ void buttonTask(void *pvParameters) {
   }
 }
 
+void LCDTask(void *pvParameters) {
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+  uint8_t movingFlag;
+  for (;;) {
+    if (xQueueReceive())
+  }
+}
+
 
 // ==============================================
 // setup / loop (Arduino entry points)
@@ -205,6 +219,16 @@ void setup() {
     nullptr,
     1,
     nullptr,
+    1
+  );
+
+  xTaskCreatePinnedToCore(
+    LCDTask,
+    "LCD task",
+    4096,
+    NULL,
+    1,
+    NULL,
     1
   );
 
