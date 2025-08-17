@@ -9,22 +9,25 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#define LDR_PIN 4
+#define BUZZER_PIN 2
 
 #define SERVICE_UUID "275dc6e0-dff5-4b56-9af0-584a5768a02a" //service UUID
-#define TX_CHAR_UUID "b51bd845-2910-4f84-b062-d297ed286b1f" // char serial monitor
+#define BUTTON_CHAR_UUID "b51bd845-2910-4f84-b062-d297ed286b1f" // char serial monitor
 #define IMU_CHAR_UUID "0679c389-0d92-4604-aac4-664c43a51934" // char LDR
 
 // Global Objexts
-BLECharacteristic* txChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
+BLECharacteristic* buttonChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
 BLECharacteristic* imuChar; // Pointer to characteristic objects (UUID, value, properties, descriptor)
 BLEServer* server; // pointer to profile/server (multiple services, connection handling)
-volatile bool deviceConnected = false; // track whether the central is connected
+volatile bool deviceConnected = false;
+volatile bool bleMessageReceived = false;// track whether the central is connected
 
 // this is an override of a virtual function BLEServerCallBacks from the BLE Library that looks like this,
 // virtual void onConnect(BLEServer* pServer) {}
 // virtual void onDisconnect(BLEServer* pServer) {}
 void IMUTask(void *pvParameters);
+void ButtonRelayTask(void *pvParameters);
+void BuzzerSetTask(void *pvParameters);
 
 // CONNECT / DISCONNECT HANDLING
 // When there is a central connected, it will automatically call onConnect, and the other way
@@ -41,9 +44,19 @@ class ServerCallbacks : public BLEServerCallbacks {
   }
 };
 
+class ButtonCallbacks: public BLECharacteristicCallbacks {
+   void onWrite(BLECharacteristic *pCharacteristic) {
+     bleMessageReceived = true; // Flag gets set when a BLE write occurs
+    }
+};
+
+SemaphoreHandle_t xButtonSignalSemaphore;
+
 void setup() {
   Serial.begin(115200);
   delay(2000);
+  pinMode(BUZZER_PIN, OUTPUT);
+  ledcAttach(BUZZER_PIN, 1000, 11);
 
   Wire.begin();
 
@@ -60,12 +73,12 @@ void setup() {
   // Creates a BLE service with UUID.
   BLEService* service = server->createService(SERVICE_UUID);
   // Create the characteristic with the characteristic UUID and notify property
-  txChar = service->createCharacteristic(
-    TX_CHAR_UUID,
-    BLECharacteristic::PROPERTY_NOTIFY
+  buttonChar = service->createCharacteristic(
+    BUTTON_CHAR_UUID,
+    BLECharacteristic::PROPERTY_READ |
+    BLECharacteristic::PROPERTY_WRITE
   );
   // Add the descriptor for CCCD to be able to subscribe/unsubscribe to notification
-  txChar->addDescriptor(new BLE2902());
   // add photoresistor char
   imuChar = service->createCharacteristic(
     IMU_CHAR_UUID,
@@ -73,6 +86,7 @@ void setup() {
   );
   // Add the descriptor for CCCD to be able to subscribe/unsubscribe to notification
   imuChar->addDescriptor(new BLE2902());
+  buttonChar->setCallbacks(new ButtonCallbacks());
 
   // 3. Advertise
   // Enable the service (giving the all the data to the server)
@@ -89,22 +103,40 @@ void setup() {
   Serial.println("Peripheral ready. Type here to send to central.");
 
   xTaskCreate(IMUTask, "IMUTask", 4096, NULL, 5, NULL);
-  xTaskCreate()
+
+  xButtonSignalSemaphore = xSemaphoreCreateBinary();
+
+  if (xButtonSignalSemaphore != NULL) {
+    xTaskCreate(ButtonRelayTask, "ButtonRelayTask", 4096, NULL, 5, NULL);
+    xTaskCreate(BuzzerSetTask, "BuzzerSetTask", 4096, NULL, 5, NULL);
+  }
 }
 
-// void notifyChunks(uint8_t* data, size_t len) {
-//   // Initialize payload to 180, make it conservative to be less than 185 slightly
-//   const size_t kChunk = 180;
-//   size_t offset = 0;
-//   // As long as 
-//   while (offset < len) {
-//     size_t n = min(kChunk, len - offset);
-//     txChar->setValue(data + offset, n);
-//     txChar->notify();
-//     offset += n;
-//     delay(5); // brief pacing so central isn’t overwhelmed
-//   }
-// }
+void ButtonRelayTask(void *pvParameters) {
+  while(1) {
+    if(bleMessageReceived) {
+      bleMessageReceived = false;
+      xSemaphoreGive(xButtonSignalSemaphore);
+      Serial.println("write recieved!");
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+
+void BuzzerSetTask(void *pvParameters) {
+  bool buzzerOn = false;
+  while(1) {
+    if(xSemaphoreTake(xButtonSignalSemaphore, portMAX_DELAY) == pdTRUE) {
+      if (!buzzerOn) {
+        buzzerOn = true;
+        ledcWriteTone(BUZZER_PIN, 1000);
+      } else {
+        buzzerOn = false;
+        ledcWriteTone(BUZZER_PIN, 0);
+      }
+    }
+  }
+}
 
 void IMUTask(void *pvParameters) {
   // Create IMU struct to hold IMU Data
@@ -227,30 +259,4 @@ void IMUTask(void *pvParameters) {
 }
 
 void loop() {
-  // You could periodically update the value here
-  // the line string
-  // static String line;
-  // // when in the serial input > 0, then it will keep checking to the line inside
-  // while (Serial.available()) {
-  //   // read by char to determine enter
-  //   char c = (char)Serial.read();
-  //   if (c == '\r') continue;
-  //   if (c == '\n') {
-  //     // if it is connected and have a length more than 0, then notify
-  //     if (deviceConnected && line.length() > 0) {
-  //       notifyChunks((uint8_t*)line.c_str(), line.length());
-  //       // enter
-  //       const char nl = '\n';
-  //       notifyChunks((uint8_t*)&nl, 1);
-  //     }
-  //     line = "";
-  //   } else {
-  //     // accumulate the character
-  //     line += c;
-  //     if (line.length() >= 1000) {
-  //       if (deviceConnected) notifyChunks((uint8_t*)line.c_str(), line.length());
-  //       line = "";
-  //     }
-  //   }
-  // }
 }
