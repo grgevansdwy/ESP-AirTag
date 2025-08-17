@@ -11,7 +11,7 @@
 #define BUTTON_PIN 1 // Button Pin pull up
 #define BUZZER_PIN 2
 
-byte AUTH_UID[] = { 0x95, 0x24, 0xDE, 0x00 };  // placeholder
+byte AUTH_UID[] = { 0xBF, 0xFB, 0x22, 0x43};  // placeholder
 
 // create RFID object
 MFRC522 rfid(PIN_SS, PIN_RST);
@@ -79,14 +79,14 @@ void loop() {
   // Check if UID of the card present, if present, then sore it, else return false
   if (!rfid.PICC_ReadCardSerial()) return;
 
-  // print the uid for the first run then copt to byte. JUST FOR FIRST RUN.
-  // Serial.print("UID:");
-  // for (byte i = 0; i < rfid.uid.size; i++) {
-  //   Serial.print(' ');
-  //   if (rfid.uid.uidByte[i] < 0x10) Serial.print('0');
-  //   Serial.print(rfid.uid.uidByte[i], HEX);
-  // }
-  // Serial.println();
+  //print the uid for the first run then copt to byte. JUST FOR FIRST RUN.
+  Serial.print("UID:");
+  for (byte i = 0; i < rfid.uid.size; i++) {
+    Serial.print(' ');
+    if (rfid.uid.uidByte[i] < 0x10) Serial.print('0');
+    Serial.print(rfid.uid.uidByte[i], HEX);
+  }
+  Serial.println();
 
   // Authorization
   if(isAuthorized()){
