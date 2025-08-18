@@ -216,6 +216,7 @@ void buttonTask(void *pvParameters) {
 void resetButtonTask(void *pvParameters) {
   unsigned long lastBtnChange = 0;
   bool lastBtnState = HIGH;
+  pinMode(RESET_PIN, INPUT_PULLUP);
   for (;;) {
     bool now = digitalRead(BUTTON_PIN);
     unsigned long time = millis();
@@ -229,6 +230,8 @@ void resetButtonTask(void *pvParameters) {
         Serial.println("RFID Locked.");
         vTaskSuspend(ButtonTaskHandle);
         vTaskSuspend(LCDTaskHandle);
+        lcd.clear();
+        lcd.print("Locked.");
         vTaskResume(RFIDTaskHandle);
       }
     }
