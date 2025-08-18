@@ -11,9 +11,12 @@
 #include <BLEUtils.h>
 #include <BLEClient.h>
 #include <BLEScan.h>
+#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
 
 // ---- HELPER FUNCTIONS -----
 #include "BLEScanner.h"
+#include "distance.h"
 
 // ==============================================
 // UUID
@@ -32,7 +35,7 @@
 // Function Prototypes (separate prototypes vs. impls)
 // ==============================================
 void BLEScannerTask(void *pvParameters);
-// void distanceTask(void *pvParameters);
+void distanceTask(void *pvParameters);
 // void UITask(void *pvParameters);
 void buttonTask(void *pvParameters);
 // void RFIDTask(void *pvParameters);
@@ -47,9 +50,9 @@ static TaskHandle_t TaskHandle_BLEScanner    = nullptr;
 // ==============================================
 // Global Queue Handles
 // ==============================================
-  QueueHandle_t IMUQ;
-//QueueHandle_t RSSIQ;
-// QueueHandle_t disQ;
+QueueHandle_t IMUQ;
+QueueHandle_t RSSIQ;
+QueueHandle_t disQ;
 // ==============================================
 // Semaphore
 // ==============================================
@@ -64,6 +67,7 @@ SemaphoreHandle_t btnSemaphore;
 // BLERemoteCharacteristic* imuRemoteChar = nullptr;
 //bool connected = false;
 uint32_t startTime;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // ==============================================
 // Task
@@ -117,12 +121,51 @@ void BLEScannerTask(void *pvParameters) {
         if (!connected) Serial.println("Still searching...");
       }
     }
-    if(xSemaphoreTake(btnSemaphore, portMAX_DELAY) == pdTRUE) {
-      writeBtnState(true); // Write button state if available
-      Serial.println("YES SEMAPHORE GOT IT");
-    }
-    vTaskDelay(pdMS_TO_TICKS(50)); // Avoid busy-waiting
+    if (connected && client && client->isConnected() && (millis() - startTime > 200)) {
+      startTime = millis();
+      int rssi = client->getRssi();
+      Serial.printf("RSSI: %d dBm\n", rssi);
+      xQueueOverwrite(RSSIQ, &rssi); // Push button state to queue
+      // updateRssiAvg(rssi); // smoothen the rssi
+      // float distance = estimateDistanceMeters(rssiAvg, txPower, nFactor); // convert rssi to distance
+      //Serial.printf("Raw RSSI: %d dBm | Smoothed RSSI: %.2f dBm | Distance: %.2f m\n", rssi, rssiAvg, distance);
+    } // Avoid busy-waiting
+    
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
+}
+
+void distanceTask(void *pvParameters) {
+
+  int rssi = 0;
+  while(1){
+    if (xQueueReceive(RSSIQ, &rssi, portMAX_DELAY) == pdTRUE) {
+      updateRssiAvg(rssi); // smoothen the rssi
+      float distance = estimateDistanceMeters(rssiAvg, txPower, nFactor); // convert rssi to distance
+      Serial.printf("Raw RSSI: %d dBm | Smoothed RSSI: %.2f dBm | Distance: %.2f m\n", rssi, rssiAvg, distance);
+      xQueueOverwrite(disQ, &distance);
+    }
+  }
+}
+
+void LCDTask(void *pvParameters) {
+  Wire.begin(8, 9);
+  lcd.init();
+  lcd.backlight();
+  uint8_t movingFlag;
+  for (;;) {
+    if(xQueueReceive(IMUQ, &movingFlag, portMAX_DELAY) == pdPASS) {
+      lcd.setCursor(0,0);
+      if (movingFlag == 1) {
+        lcd.print("moving!   ");
+        Serial.println("device is moving!");
+      } else {
+        lcd.print("not moving");
+        Serial.println("Device is not moving");
+      }
+    }
+  }
+
 }
 
 void buttonTask(void *pvParameters) {
@@ -137,7 +180,7 @@ void buttonTask(void *pvParameters) {
     // Edge detection: detect falling edge (pressed)
     if (lastButton == HIGH && currentButton == LOW) {
       Serial.println("pressed");
-      xSemaphoreGive(btnSemaphore);
+      writeBtnState(true); 
     }
 
     // Update last button states for edge detection
@@ -162,8 +205,8 @@ void setup() {
 
   // Create queues
   IMUQ = xQueueCreate(1, sizeof(uint8_t));
-  // RSSIQ = xQueueCreate(1, sizeof(int));
-  // disQ = xQueueCreate(1, sizeof(int));
+  RSSIQ = xQueueCreate(1, sizeof(int));
+  disQ = xQueueCreate(1, sizeof(float));
 
 
   // TASK ON PIN 0 - radio-friendly and are not connected to peripheral
@@ -177,15 +220,15 @@ void setup() {
     0
   );
 
-  // xTaskCreatePinnedToCore(
-  //   distanceTask,
-  //   "distance Task",
-  //   4096,
-  //   nullptr,
-  //   1,
-  //   nullptr,
-  //   0
-  // );
+  xTaskCreatePinnedToCore(
+    distanceTask,
+    "distance Task",
+    4096,
+    nullptr,
+    1,
+    nullptr,
+    0
+  );
 
   // // TASK ON PIN 1 - All peripherals / UI
   // xTaskCreatePinnedToCore(
@@ -205,6 +248,16 @@ void setup() {
     nullptr,
     1,
     nullptr,
+    1
+  );
+
+  xTaskCreatePinnedToCore(
+    LCDTask,
+    "LCD Task",
+    4096,
+    NULL,
+    1,
+    NULL,
     1
   );
 
