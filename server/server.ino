@@ -237,7 +237,7 @@ void IMUTask(void *pvParameters) {
     avg = sum / 32;
 
     // notifying logic. 
-    if (avg >= 0.5 && !movement) {
+    if (avg >= 0.25 && !movement) {
       moveSignal = 1;
       Serial.println("movement detected!");
       sprintf(str, "%d", moveSignal);
