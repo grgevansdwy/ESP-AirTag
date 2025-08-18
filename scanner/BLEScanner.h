@@ -18,8 +18,6 @@ extern BLEUUID imuUUID;
 // Provide your IMU queue so notifications can push 0/1 into it
 void setIMUQueue(QueueHandle_t q);
 
-
-
 // Write one byte (0/1) to the button characteristic
 bool writeBtnState(bool pressed);
 
