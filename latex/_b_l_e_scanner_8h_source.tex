@@ -1,0 +1,41 @@
+\doxysection{BLEScanner.\+h}
+\hypertarget{_b_l_e_scanner_8h_source}{}\label{_b_l_e_scanner_8h_source}\index{scanner/BLEScanner.h@{scanner/BLEScanner.h}}
+\mbox{\hyperlink{_b_l_e_scanner_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <BLEDevice.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}freertos/FreeRTOS.h"{}}\ \ \ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}freertos/queue.h"{}}\ \ \ \ \ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ ============================================================================}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ Global\ Variables}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ ============================================================================}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{extern}\ \textcolor{keyword}{volatile}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_ae4e4ce6a658b77aa4bb7753403794776}{connected}};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{extern}\ BLEClient*\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_a475f605cd52d79a3ebf181514e37d7d1}{client}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{extern}\ BLERemoteCharacteristic*\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_a1dd234b237f1c2dc0e0c1f1478fe82a9}{btnRemoteChar}};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{extern}\ BLERemoteCharacteristic*\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_a097e3c277c500b4b4cc005efb8332548}{imuRemoteChar}};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{extern}\ BLEUUID\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_a7a543741fb3d4beea43ca8520ce22862}{svcUUID}};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{extern}\ BLEUUID\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_a7e5fe6636972b5e3774a4d0a5d15978f}{btnUUID}};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{extern}\ BLEUUID\ \mbox{\hyperlink{_b_l_e_scanner_8cpp_a8a9c97643b6cfc8d63cb8c494c652282}{imuUUID}};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ ============================================================================}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//\ Functions}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ ============================================================================}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00073\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_b_l_e_scanner_8h_abd60e1b76b5c50dd9cd637ea12572eb9}{setIMUQueue}}(QueueHandle\_t\ q);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00083\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_b_l_e_scanner_8h_a5ac7cf442cd3b443554624883671b7e2}{writeBtnState}}(\textcolor{keywordtype}{bool}\ pressed);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00095\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_b_l_e_scanner_8h_a823e98bf49dadbbb0a253ecd13f5327e}{connectToPeripheral}}(BLEAddress\ addr);\ }
+
+\end{DoxyCode}

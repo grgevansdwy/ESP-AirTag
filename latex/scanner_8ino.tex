@@ -1,0 +1,395 @@
+\doxysection{scanner/scanner.ino File Reference}
+\hypertarget{scanner_8ino}{}\label{scanner_8ino}\index{scanner/scanner.ino@{scanner/scanner.ino}}
+
+
+ESP32 BLE Central with RFID and LCD UI.  
+
+
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/task.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/queue.\+h"{}}\newline
+{\ttfamily \#include $<$BLEDevice.\+h$>$}\newline
+{\ttfamily \#include $<$BLEUtils.\+h$>$}\newline
+{\ttfamily \#include $<$BLEClient.\+h$>$}\newline
+{\ttfamily \#include $<$BLEScan.\+h$>$}\newline
+{\ttfamily \#include $<$Liquid\+Crystal\+\_\+\+I2\+C.\+h$>$}\newline
+{\ttfamily \#include $<$Wire.\+h$>$}\newline
+{\ttfamily \#include $<$SPI.\+h$>$}\newline
+{\ttfamily \#include $<$MFRC522.\+h$>$}\newline
+{\ttfamily \#include "{}BLEScanner.\+h"{}}\newline
+{\ttfamily \#include "{}distance.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_a445125ee8c34695376c85f10b38844d6}{SERVICE\+\_\+\+UUID}}~"{}275dc6e0-\/dff5-\/4b56-\/9af0-\/584a5768a02a"{}
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_afe874f71a08a3f462cb89a768e2a43e2}{BUTTON\+\_\+\+CHAR\+\_\+\+UUID}}~"{}b51bd845-\/2910-\/4f84-\/b062-\/d297ed286b1f"{}
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_ad5ef132e7e580fbe574f6cf357becb2e}{IMU\+\_\+\+CHAR\+\_\+\+UUID}}~"{}0679c389-\/0d92-\/4604-\/aac4-\/664c43a51934"{}
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_ab61d0981ed42df9e18211b273d22cfcd}{BUZZER\+\_\+\+PIN}}~42
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_a08bca59db4b190eaaea4d47b7562869c}{RESET\+\_\+\+PIN}}~41
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_a326fc861b95f600798f492bd65a5caed}{RFID\+\_\+\+PIN}}~40
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_a6a1a3e97267377d1b18bb9073192fdf1}{PIN\+\_\+\+SCK}}~13
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_a46bdd417480dec5cb9cf196af3c7489c}{PIN\+\_\+\+MISO}}~11
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_abaeddda4b992af7165ed898ab8b2b4ac}{PIN\+\_\+\+MOSI}}~12
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_ab4b553591a495409d4f7cec4b6c3e754}{PIN\+\_\+\+SS}}~14
+\item 
+\#define \mbox{\hyperlink{scanner_8ino_a0010d60e4eaa7f589cd190c45dcc7d20}{PIN\+\_\+\+RST}}~10
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{scanner_8ino_a366bf7d724e74382df3a70cbfcf4cf9d}{BLEScanner\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task to scan for BLE peripherals. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scanner_8ino_ace8b2fe642b7289d51edb712ab27f86b}{distance\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task to compute distance from RSSI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scanner_8ino_ae38cff9bb8d4b8b7bfff8fb8b68ffb77}{UITask}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task to update LCD UI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scanner_8ino_a1f2482e5e4403590a79f1bb1eaedcbea}{button\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task to handle button input. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scanner_8ino_ab3b8593e304b021095698adac2b7f217}{RFIDTask}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task to handle RFID scanning and authorization. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scanner_8ino_a78aea0b783dee7e793220e19bf94eea9}{reset\+Button\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task to reset RFID and lock system. \end{DoxyCompactList}\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{scanner_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}{lcd}} (0x27, 16, 2)
+\item 
+MFRC522 \mbox{\hyperlink{scanner_8ino_a7c2f79e6d9d3ac306c0daed213e162a4}{rfid}} (\mbox{\hyperlink{scanner_8ino_ab4b553591a495409d4f7cec4b6c3e754}{PIN\+\_\+\+SS}}, \mbox{\hyperlink{scanner_8ino_a0010d60e4eaa7f589cd190c45dcc7d20}{PIN\+\_\+\+RST}})
+\item 
+bool \mbox{\hyperlink{scanner_8ino_ada1331884e2cfbe181532b4833c2bb78}{is\+Authorized}} ()
+\begin{DoxyCompactList}\small\item\em Check if RFID UID is authorized. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scanner_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Arduino setup function. Initializes queues, peripherals, tasks, and starts Free\+RTOS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_a467e28ac5652806c01ab750112413fb1}{UITask\+Handle}}
+\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_a2da550aadcbf5e6024b7395ad66fbcd2}{Button\+Task\+Handle}}
+\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_a7bc035b6b02d12aad4f989c47ce95ce3}{RFIDTask\+Handle}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_a36a62ed2995d8a4c80ea910f4e62c792}{IMUQ}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_afc318e3b04b7bf8f6fecc08ac6a0a39a}{RSSIQ}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_aaa747d1be9fe26dc539f6b760aa40577}{disQ}}
+\item 
+Queue\+Set\+Handle\+\_\+t \mbox{\hyperlink{scanner_8ino_a8e83540e3203f0d452453786a5911874}{ui\+Set}} = nullptr
+\item 
+uint32\+\_\+t \mbox{\hyperlink{scanner_8ino_a776f35f97f4e03bed1685798da2dca92}{start\+Time}}
+\item 
+byte \mbox{\hyperlink{scanner_8ino_aa57020f6115c1f3bb322d9f3fd01fcba}{AUTH\+\_\+\+UID}} \mbox{[}$\,$\mbox{]} = \{ 0x04, 0x81, 0x70, 0x0A, 0x9C, 0x14, 0x90 \}
+\begin{DoxyCompactList}\small\item\em Authorized UID for RFID access. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+ESP32 BLE Central with RFID and LCD UI. 
+
+This sketch implements an ESP32 BLE central device that\+:
+\begin{DoxyItemize}
+\item Scans and connects to a BLE peripheral (with Button + IMU characteristics)
+\item Estimates distance from RSSI using a path-\/loss model
+\item Displays IMU movement state and distance on an I2C LCD
+\item Uses Free\+RTOS tasks for concurrency (scanner, distance calc, UI, button, RFID, reset)
+\item Integrates RC522 RFID for access control, requiring authorized UID
+\end{DoxyItemize}
+
+\begin{DoxyNote}{Note}
+Uses ESP32 Arduino Core 3.\+x (Nim\+BLE backend). 
+\end{DoxyNote}
+\begin{DoxyAuthor}{Author}
+George Evans Daenuwy \& Rasya Fawwaz 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/08-\/21 
+\end{DoxyDate}
+
+
+\label{doc-define-members}
+\Hypertarget{scanner_8ino_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{scanner_8ino_afe874f71a08a3f462cb89a768e2a43e2}\index{scanner.ino@{scanner.ino}!BUTTON\_CHAR\_UUID@{BUTTON\_CHAR\_UUID}}
+\index{BUTTON\_CHAR\_UUID@{BUTTON\_CHAR\_UUID}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_CHAR\_UUID}{BUTTON\_CHAR\_UUID}}
+{\footnotesize\ttfamily \label{scanner_8ino_afe874f71a08a3f462cb89a768e2a43e2} 
+\#define BUTTON\+\_\+\+CHAR\+\_\+\+UUID~"{}b51bd845-\/2910-\/4f84-\/b062-\/d297ed286b1f"{}}
+
+Button characteristic UUID \Hypertarget{scanner_8ino_ab61d0981ed42df9e18211b273d22cfcd}\index{scanner.ino@{scanner.ino}!BUZZER\_PIN@{BUZZER\_PIN}}
+\index{BUZZER\_PIN@{BUZZER\_PIN}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{BUZZER\_PIN}{BUZZER\_PIN}}
+{\footnotesize\ttfamily \label{scanner_8ino_ab61d0981ed42df9e18211b273d22cfcd} 
+\#define BUZZER\+\_\+\+PIN~42}
+
+GPIO pin for buzzer/button \Hypertarget{scanner_8ino_ad5ef132e7e580fbe574f6cf357becb2e}\index{scanner.ino@{scanner.ino}!IMU\_CHAR\_UUID@{IMU\_CHAR\_UUID}}
+\index{IMU\_CHAR\_UUID@{IMU\_CHAR\_UUID}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{IMU\_CHAR\_UUID}{IMU\_CHAR\_UUID}}
+{\footnotesize\ttfamily \label{scanner_8ino_ad5ef132e7e580fbe574f6cf357becb2e} 
+\#define IMU\+\_\+\+CHAR\+\_\+\+UUID~"{}0679c389-\/0d92-\/4604-\/aac4-\/664c43a51934"{}}
+
+IMU characteristic UUID \Hypertarget{scanner_8ino_a46bdd417480dec5cb9cf196af3c7489c}\index{scanner.ino@{scanner.ino}!PIN\_MISO@{PIN\_MISO}}
+\index{PIN\_MISO@{PIN\_MISO}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{PIN\_MISO}{PIN\_MISO}}
+{\footnotesize\ttfamily \label{scanner_8ino_a46bdd417480dec5cb9cf196af3c7489c} 
+\#define PIN\+\_\+\+MISO~11}
+
+RC522 MISO pin \Hypertarget{scanner_8ino_abaeddda4b992af7165ed898ab8b2b4ac}\index{scanner.ino@{scanner.ino}!PIN\_MOSI@{PIN\_MOSI}}
+\index{PIN\_MOSI@{PIN\_MOSI}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{PIN\_MOSI}{PIN\_MOSI}}
+{\footnotesize\ttfamily \label{scanner_8ino_abaeddda4b992af7165ed898ab8b2b4ac} 
+\#define PIN\+\_\+\+MOSI~12}
+
+RC522 MOSI pin \Hypertarget{scanner_8ino_a0010d60e4eaa7f589cd190c45dcc7d20}\index{scanner.ino@{scanner.ino}!PIN\_RST@{PIN\_RST}}
+\index{PIN\_RST@{PIN\_RST}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{PIN\_RST}{PIN\_RST}}
+{\footnotesize\ttfamily \label{scanner_8ino_a0010d60e4eaa7f589cd190c45dcc7d20} 
+\#define PIN\+\_\+\+RST~10}
+
+RC522 reset \Hypertarget{scanner_8ino_a6a1a3e97267377d1b18bb9073192fdf1}\index{scanner.ino@{scanner.ino}!PIN\_SCK@{PIN\_SCK}}
+\index{PIN\_SCK@{PIN\_SCK}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{PIN\_SCK}{PIN\_SCK}}
+{\footnotesize\ttfamily \label{scanner_8ino_a6a1a3e97267377d1b18bb9073192fdf1} 
+\#define PIN\+\_\+\+SCK~13}
+
+RC522 SCK pin \Hypertarget{scanner_8ino_ab4b553591a495409d4f7cec4b6c3e754}\index{scanner.ino@{scanner.ino}!PIN\_SS@{PIN\_SS}}
+\index{PIN\_SS@{PIN\_SS}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{PIN\_SS}{PIN\_SS}}
+{\footnotesize\ttfamily \label{scanner_8ino_ab4b553591a495409d4f7cec4b6c3e754} 
+\#define PIN\+\_\+\+SS~14}
+
+RC522 chip select (SDA/\+SS) \Hypertarget{scanner_8ino_a08bca59db4b190eaaea4d47b7562869c}\index{scanner.ino@{scanner.ino}!RESET\_PIN@{RESET\_PIN}}
+\index{RESET\_PIN@{RESET\_PIN}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{RESET\_PIN}{RESET\_PIN}}
+{\footnotesize\ttfamily \label{scanner_8ino_a08bca59db4b190eaaea4d47b7562869c} 
+\#define RESET\+\_\+\+PIN~41}
+
+GPIO pin for reset button \Hypertarget{scanner_8ino_a326fc861b95f600798f492bd65a5caed}\index{scanner.ino@{scanner.ino}!RFID\_PIN@{RFID\_PIN}}
+\index{RFID\_PIN@{RFID\_PIN}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{RFID\_PIN}{RFID\_PIN}}
+{\footnotesize\ttfamily \label{scanner_8ino_a326fc861b95f600798f492bd65a5caed} 
+\#define RFID\+\_\+\+PIN~40}
+
+GPIO pin for RFID buzzer \Hypertarget{scanner_8ino_a445125ee8c34695376c85f10b38844d6}\index{scanner.ino@{scanner.ino}!SERVICE\_UUID@{SERVICE\_UUID}}
+\index{SERVICE\_UUID@{SERVICE\_UUID}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{SERVICE\_UUID}{SERVICE\_UUID}}
+{\footnotesize\ttfamily \label{scanner_8ino_a445125ee8c34695376c85f10b38844d6} 
+\#define SERVICE\+\_\+\+UUID~"{}275dc6e0-\/dff5-\/4b56-\/9af0-\/584a5768a02a"{}}
+
+\texorpdfstring{$<$}{<} BLE core (ESP32 Arduino core 3.\+x uses Nim\+BLE backend) \texorpdfstring{$<$}{<} I2C LCD library \texorpdfstring{$<$}{<} I2C bus \texorpdfstring{$<$}{<} SPI bus \texorpdfstring{$<$}{<} RFID RC522 driver \texorpdfstring{$<$}{<} Custom BLE scanning logic \texorpdfstring{$<$}{<} Distance estimation from RSSI Service UUID 
+
+\label{doc-func-members}
+\Hypertarget{scanner_8ino_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{scanner_8ino_a366bf7d724e74382df3a70cbfcf4cf9d}\index{scanner.ino@{scanner.ino}!BLEScannerTask@{BLEScannerTask}}
+\index{BLEScannerTask@{BLEScannerTask}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{BLEScannerTask()}{BLEScannerTask()}}
+{\footnotesize\ttfamily \label{scanner_8ino_a366bf7d724e74382df3a70cbfcf4cf9d} 
+void BLEScanner\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task to scan for BLE peripherals. 
+
+BLE scanner task.
+
+
+\begin{DoxyItemize}
+\item Initializes BLE central
+\item Scans for peripherals advertising the target service UUID
+\item Connects and auto-\/reconnects if disconnected
+\item Periodically reads RSSI and sends to RSSI queue 
+\end{DoxyItemize}\Hypertarget{scanner_8ino_a1f2482e5e4403590a79f1bb1eaedcbea}\index{scanner.ino@{scanner.ino}!buttonTask@{buttonTask}}
+\index{buttonTask@{buttonTask}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{buttonTask()}{buttonTask()}}
+{\footnotesize\ttfamily \label{scanner_8ino_a1f2482e5e4403590a79f1bb1eaedcbea} 
+void button\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task to handle button input. 
+
+Button task.
+
+
+\begin{DoxyItemize}
+\item Reads button press with debouncing
+\item Sends state via BLE 
+\end{DoxyItemize}\Hypertarget{scanner_8ino_ace8b2fe642b7289d51edb712ab27f86b}\index{scanner.ino@{scanner.ino}!distanceTask@{distanceTask}}
+\index{distanceTask@{distanceTask}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{distanceTask()}{distanceTask()}}
+{\footnotesize\ttfamily \label{scanner_8ino_ace8b2fe642b7289d51edb712ab27f86b} 
+void distance\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task to compute distance from RSSI. 
+
+Distance estimation task.
+
+
+\begin{DoxyItemize}
+\item Consumes RSSI values
+\item Smooths RSSI
+\item Converts to distance estimate
+\item Sends result to distance queue 
+\end{DoxyItemize}\Hypertarget{scanner_8ino_ada1331884e2cfbe181532b4833c2bb78}\index{scanner.ino@{scanner.ino}!isAuthorized@{isAuthorized}}
+\index{isAuthorized@{isAuthorized}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{isAuthorized()}{isAuthorized()}}
+{\footnotesize\ttfamily \label{scanner_8ino_ada1331884e2cfbe181532b4833c2bb78} 
+bool is\+Authorized (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Check if RFID UID is authorized. 
+
+
+\begin{DoxyRetVals}{Return values}
+{\em true} & if UID matches AUTH\+\_\+\+UID \\
+\hline
+{\em false} & otherwise \\
+\hline
+\end{DoxyRetVals}
+\Hypertarget{scanner_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}\index{scanner.ino@{scanner.ino}!lcd@{lcd}}
+\index{lcd@{lcd}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{lcd()}{lcd()}}
+{\footnotesize\ttfamily \label{scanner_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d} 
+Liquid\+Crystal\+\_\+\+I2C lcd (\begin{DoxyParamCaption}\item[{0x27}]{}{, }\item[{16}]{}{, }\item[{2}]{}{}\end{DoxyParamCaption})}
+
+I2C LCD (16x2) \Hypertarget{scanner_8ino_a78aea0b783dee7e793220e19bf94eea9}\index{scanner.ino@{scanner.ino}!resetButtonTask@{resetButtonTask}}
+\index{resetButtonTask@{resetButtonTask}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{resetButtonTask()}{resetButtonTask()}}
+{\footnotesize\ttfamily \label{scanner_8ino_a78aea0b783dee7e793220e19bf94eea9} 
+void reset\+Button\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task to reset RFID and lock system. 
+
+Reset button task.
+
+
+\begin{DoxyItemize}
+\item Debounced reset button input
+\item Resets RFID and locks system
+\item Suspends UI and button tasks 
+\end{DoxyItemize}\Hypertarget{scanner_8ino_a7c2f79e6d9d3ac306c0daed213e162a4}\index{scanner.ino@{scanner.ino}!rfid@{rfid}}
+\index{rfid@{rfid}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{rfid()}{rfid()}}
+{\footnotesize\ttfamily \label{scanner_8ino_a7c2f79e6d9d3ac306c0daed213e162a4} 
+MFRC522 rfid (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{scanner_8ino_ab4b553591a495409d4f7cec4b6c3e754}{PIN\+\_\+\+SS}}}]{}{, }\item[{\mbox{\hyperlink{scanner_8ino_a0010d60e4eaa7f589cd190c45dcc7d20}{PIN\+\_\+\+RST}}}]{}{}\end{DoxyParamCaption})}
+
+RFID reader instance \Hypertarget{scanner_8ino_ab3b8593e304b021095698adac2b7f217}\index{scanner.ino@{scanner.ino}!RFIDTask@{RFIDTask}}
+\index{RFIDTask@{RFIDTask}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{RFIDTask()}{RFIDTask()}}
+{\footnotesize\ttfamily \label{scanner_8ino_ab3b8593e304b021095698adac2b7f217} 
+void RFIDTask (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task to handle RFID scanning and authorization. 
+
+RFID task.
+
+
+\begin{DoxyItemize}
+\item Waits for RFID card
+\item Prints UID to Serial
+\item Grants access if authorized
+\item Resumes UI and button tasks on success 
+\end{DoxyItemize}\Hypertarget{scanner_8ino_a4fc01d736fe50cf5b977f755b675f11d}\index{scanner.ino@{scanner.ino}!setup@{setup}}
+\index{setup@{setup}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{scanner_8ino_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Arduino setup function. Initializes queues, peripherals, tasks, and starts Free\+RTOS. 
+
+\Hypertarget{scanner_8ino_ae38cff9bb8d4b8b7bfff8fb8b68ffb77}\index{scanner.ino@{scanner.ino}!UITask@{UITask}}
+\index{UITask@{UITask}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{UITask()}{UITask()}}
+{\footnotesize\ttfamily \label{scanner_8ino_ae38cff9bb8d4b8b7bfff8fb8b68ffb77} 
+void UITask (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task to update LCD UI. 
+
+UI task.
+
+
+\begin{DoxyItemize}
+\item Displays distance and movement state on LCD
+\item Consumes from IMUQ and distance queue 
+\end{DoxyItemize}
+
+\label{doc-var-members}
+\Hypertarget{scanner_8ino_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{scanner_8ino_aa57020f6115c1f3bb322d9f3fd01fcba}\index{scanner.ino@{scanner.ino}!AUTH\_UID@{AUTH\_UID}}
+\index{AUTH\_UID@{AUTH\_UID}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{AUTH\_UID}{AUTH\_UID}}
+{\footnotesize\ttfamily \label{scanner_8ino_aa57020f6115c1f3bb322d9f3fd01fcba} 
+byte AUTH\+\_\+\+UID\mbox{[}$\,$\mbox{]} = \{ 0x04, 0x81, 0x70, 0x0A, 0x9C, 0x14, 0x90 \}}
+
+
+
+Authorized UID for RFID access. 
+
+\Hypertarget{scanner_8ino_a2da550aadcbf5e6024b7395ad66fbcd2}\index{scanner.ino@{scanner.ino}!ButtonTaskHandle@{ButtonTaskHandle}}
+\index{ButtonTaskHandle@{ButtonTaskHandle}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{ButtonTaskHandle}{ButtonTaskHandle}}
+{\footnotesize\ttfamily \label{scanner_8ino_a2da550aadcbf5e6024b7395ad66fbcd2} 
+Task\+Handle\+\_\+t Button\+Task\+Handle}
+
+Handle for button task \Hypertarget{scanner_8ino_aaa747d1be9fe26dc539f6b760aa40577}\index{scanner.ino@{scanner.ino}!disQ@{disQ}}
+\index{disQ@{disQ}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{disQ}{disQ}}
+{\footnotesize\ttfamily \label{scanner_8ino_aaa747d1be9fe26dc539f6b760aa40577} 
+Queue\+Handle\+\_\+t disQ}
+
+Queue for distance values \Hypertarget{scanner_8ino_a36a62ed2995d8a4c80ea910f4e62c792}\index{scanner.ino@{scanner.ino}!IMUQ@{IMUQ}}
+\index{IMUQ@{IMUQ}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{IMUQ}{IMUQ}}
+{\footnotesize\ttfamily \label{scanner_8ino_a36a62ed2995d8a4c80ea910f4e62c792} 
+Queue\+Handle\+\_\+t IMUQ}
+
+Queue for IMU moving flag \Hypertarget{scanner_8ino_a7bc035b6b02d12aad4f989c47ce95ce3}\index{scanner.ino@{scanner.ino}!RFIDTaskHandle@{RFIDTaskHandle}}
+\index{RFIDTaskHandle@{RFIDTaskHandle}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{RFIDTaskHandle}{RFIDTaskHandle}}
+{\footnotesize\ttfamily \label{scanner_8ino_a7bc035b6b02d12aad4f989c47ce95ce3} 
+Task\+Handle\+\_\+t RFIDTask\+Handle}
+
+Handle for RFID task \Hypertarget{scanner_8ino_afc318e3b04b7bf8f6fecc08ac6a0a39a}\index{scanner.ino@{scanner.ino}!RSSIQ@{RSSIQ}}
+\index{RSSIQ@{RSSIQ}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{RSSIQ}{RSSIQ}}
+{\footnotesize\ttfamily \label{scanner_8ino_afc318e3b04b7bf8f6fecc08ac6a0a39a} 
+Queue\+Handle\+\_\+t RSSIQ}
+
+Queue for RSSI values \Hypertarget{scanner_8ino_a776f35f97f4e03bed1685798da2dca92}\index{scanner.ino@{scanner.ino}!startTime@{startTime}}
+\index{startTime@{startTime}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{startTime}{startTime}}
+{\footnotesize\ttfamily \label{scanner_8ino_a776f35f97f4e03bed1685798da2dca92} 
+uint32\+\_\+t start\+Time}
+
+Timer for RSSI sampling \Hypertarget{scanner_8ino_a8e83540e3203f0d452453786a5911874}\index{scanner.ino@{scanner.ino}!uiSet@{uiSet}}
+\index{uiSet@{uiSet}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{uiSet}{uiSet}}
+{\footnotesize\ttfamily \label{scanner_8ino_a8e83540e3203f0d452453786a5911874} 
+Queue\+Set\+Handle\+\_\+t ui\+Set = nullptr}
+
+Queue set for UI multiplexing \Hypertarget{scanner_8ino_a467e28ac5652806c01ab750112413fb1}\index{scanner.ino@{scanner.ino}!UITaskHandle@{UITaskHandle}}
+\index{UITaskHandle@{UITaskHandle}!scanner.ino@{scanner.ino}}
+\doxysubsubsection{\texorpdfstring{UITaskHandle}{UITaskHandle}}
+{\footnotesize\ttfamily \label{scanner_8ino_a467e28ac5652806c01ab750112413fb1} 
+Task\+Handle\+\_\+t UITask\+Handle}
+
+Handle for UI task 

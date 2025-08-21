@@ -1,0 +1,266 @@
+\doxysection{/\+Users/georgeevansdaenuwy/\+Downloads/\+Lab4\+Files/lab4\+Part1/lab4\+Part1.ino File Reference}
+\hypertarget{lab4_part1_8ino}{}\label{lab4_part1_8ino}\index{/Users/georgeevansdaenuwy/Downloads/Lab4Files/lab4Part1/lab4Part1.ino@{/Users/georgeevansdaenuwy/Downloads/Lab4Files/lab4Part1/lab4Part1.ino}}
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Liquid\+Crystal\+\_\+\+I2\+C.\+h$>$}\newline
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/task.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lab4_part1_8ino_ab4553be4db9860d940f81d7447173b2f}{LED\+\_\+\+PIN}}~1
+\begin{DoxyCompactList}\small\item\em \texorpdfstring{$<$}{<} Task management functions \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{lab4_part1_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}{lcd}} (0x27, 16, 2)
+\begin{DoxyCompactList}\small\item\em LCD configuration -\/ I2C address 0x27, 16 columns, 2 rows. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lab4_part1_8ino_a0e9abc4adafb917c6af448aca6042e96}{led\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Toggles built-\/in LED every 500ms (250ms on, 250ms off). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lab4_part1_8ino_a48b36aa822b3802d8b2712430b9de888}{counter\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Displays incrementing counter (1 to 20) on LCD first row. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lab4_part1_8ino_a0ad17e099d51e3e0ffbc015c29a3d244}{alphabet\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Prints letters A–Z to serial monitor with commas. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lab4_part1_8ino_aa370624994392670c7e1ab334d02c5f6}{scheduler\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Implements Shortest Remaining Time (SRT) scheduling algorithm. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lab4_part1_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Initializes serial communication, LCD display, and creates all Free\+RTOS tasks with custom scheduler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lab4_part1_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Main loop function (empty when using Free\+RTOS tasks). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_af53fb495641a4bb2e63eb19609df61ad}{Task\+Handle\+\_\+\+LED}}
+\begin{DoxyCompactList}\small\item\em Task handles for managing Free\+RTOS tasks. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_ad8dae45efc3452fb6c3a3fd858782449}{Task\+Handle\+\_\+\+Counter}}
+\begin{DoxyCompactList}\small\item\em Handle for counter task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_aae2cf475de5acc8624674bc3f64a556f}{Task\+Handle\+\_\+\+Alphabet}}
+\begin{DoxyCompactList}\small\item\em Handle for alphabet task. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_a0995587169c8c6995afe4c6c6801abbd}{Task\+Handle\+\_\+\+Scheduler}}
+\begin{DoxyCompactList}\small\item\em Handle for scheduler task. \end{DoxyCompactList}\item 
+const Tick\+Type\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_a75818cb094cf69f33e62ddf759c8daab}{led\+Task\+Execution\+Time}} = 50000 / port\+TICK\+\_\+\+PERIOD\+\_\+\+MS
+\begin{DoxyCompactList}\small\item\em Total execution times for each task (in ticks). \end{DoxyCompactList}\item 
+const Tick\+Type\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_a2e782932f0bf2f1fa35ac3bfa9a8b5cc}{counter\+Task\+Execution\+Time}} = 2000 / port\+TICK\+\_\+\+PERIOD\+\_\+\+MS
+\begin{DoxyCompactList}\small\item\em 2 seconds \end{DoxyCompactList}\item 
+const Tick\+Type\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_ae03e873e30fb2f78c6292fc4e2614e54}{alphabet\+Task\+Execution\+Time}} = 13000 / port\+TICK\+\_\+\+PERIOD\+\_\+\+MS
+\begin{DoxyCompactList}\small\item\em 13 seconds \end{DoxyCompactList}\item 
+volatile Tick\+Type\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_a984bdb71413c08cf09f7d11793877dfa}{remaining\+Led\+Time}} = \mbox{\hyperlink{lab4_part1_8ino_a75818cb094cf69f33e62ddf759c8daab}{led\+Task\+Execution\+Time}}
+\begin{DoxyCompactList}\small\item\em Remaining execution times for SRT scheduling algorithm. \end{DoxyCompactList}\item 
+volatile Tick\+Type\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_a562419e3d9d311efcc74859e5b3adf44}{remaining\+Counter\+Time}} = \mbox{\hyperlink{lab4_part1_8ino_a2e782932f0bf2f1fa35ac3bfa9a8b5cc}{counter\+Task\+Execution\+Time}}
+\item 
+volatile Tick\+Type\+\_\+t \mbox{\hyperlink{lab4_part1_8ino_a1fb03c229171c45dee3187903d2cbcf3}{remaining\+Alphabet\+Time}} = \mbox{\hyperlink{lab4_part1_8ino_ae03e873e30fb2f78c6292fc4e2614e54}{alphabet\+Task\+Execution\+Time}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-define-members}
+\Hypertarget{lab4_part1_8ino_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{lab4_part1_8ino_ab4553be4db9860d940f81d7447173b2f}\index{lab4Part1.ino@{lab4Part1.ino}!LED\_PIN@{LED\_PIN}}
+\index{LED\_PIN@{LED\_PIN}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{LED\_PIN}{LED\_PIN}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_ab4553be4db9860d940f81d7447173b2f} 
+\#define LED\+\_\+\+PIN~1}
+
+
+
+\texorpdfstring{$<$}{<} Task management functions 
+
+\texorpdfstring{$<$}{<} Arduino core functions \texorpdfstring{$<$}{<} I2C LCD library Free\+RTOS core functionality Pin for built-\/in LED 
+
+\label{doc-func-members}
+\Hypertarget{lab4_part1_8ino_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{lab4_part1_8ino_a0ad17e099d51e3e0ffbc015c29a3d244}\index{lab4Part1.ino@{lab4Part1.ino}!alphabetTask@{alphabetTask}}
+\index{alphabetTask@{alphabetTask}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{alphabetTask()}{alphabetTask()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a0ad17e099d51e3e0ffbc015c29a3d244} 
+void alphabet\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Prints letters A–Z to serial monitor with commas. 
+
+Resets to \textquotesingle{}A\textquotesingle{} after \textquotesingle{}Z\textquotesingle{}. Suspends itself between letters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lab4_part1_8ino_a48b36aa822b3802d8b2712430b9de888}\index{lab4Part1.ino@{lab4Part1.ino}!counterTask@{counterTask}}
+\index{counterTask@{counterTask}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{counterTask()}{counterTask()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a48b36aa822b3802d8b2712430b9de888} 
+void counter\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Displays incrementing counter (1 to 20) on LCD first row. 
+
+Suspends itself between increments for scheduler control.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lab4_part1_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}\index{lab4Part1.ino@{lab4Part1.ino}!lcd@{lcd}}
+\index{lcd@{lcd}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{lcd()}{lcd()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d} 
+Liquid\+Crystal\+\_\+\+I2C lcd (\begin{DoxyParamCaption}\item[{0x27}]{}{, }\item[{16}]{}{, }\item[{2}]{}{}\end{DoxyParamCaption})}
+
+
+
+LCD configuration -\/ I2C address 0x27, 16 columns, 2 rows. 
+
+\Hypertarget{lab4_part1_8ino_a0e9abc4adafb917c6af448aca6042e96}\index{lab4Part1.ino@{lab4Part1.ino}!ledTask@{ledTask}}
+\index{ledTask@{ledTask}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{ledTask()}{ledTask()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a0e9abc4adafb917c6af448aca6042e96} 
+void led\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Toggles built-\/in LED every 500ms (250ms on, 250ms off). 
+
+Suspends itself after each cycle for scheduler control.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lab4_part1_8ino_afe461d27b9c48d5921c00d521181f12f}\index{lab4Part1.ino@{lab4Part1.ino}!loop@{loop}}
+\index{loop@{loop}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_afe461d27b9c48d5921c00d521181f12f} 
+void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Main loop function (empty when using Free\+RTOS tasks). 
+
+\Hypertarget{lab4_part1_8ino_aa370624994392670c7e1ab334d02c5f6}\index{lab4Part1.ino@{lab4Part1.ino}!schedulerTask@{schedulerTask}}
+\index{schedulerTask@{schedulerTask}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{schedulerTask()}{schedulerTask()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_aa370624994392670c7e1ab334d02c5f6} 
+void scheduler\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Implements Shortest Remaining Time (SRT) scheduling algorithm. 
+
+Determines which task has the shortest remaining execution time and resumes it. Updates remaining times and cycles through tasks accordingly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Unused. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lab4_part1_8ino_a4fc01d736fe50cf5b977f755b675f11d}\index{lab4Part1.ino@{lab4Part1.ino}!setup@{setup}}
+\index{setup@{setup}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initializes serial communication, LCD display, and creates all Free\+RTOS tasks with custom scheduler. 
+
+This function sets up all tasks (LED, counter, alphabet) in a suspended state initially, and starts the scheduler task with the highest priority. 
+
+\label{doc-var-members}
+\Hypertarget{lab4_part1_8ino_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{lab4_part1_8ino_ae03e873e30fb2f78c6292fc4e2614e54}\index{lab4Part1.ino@{lab4Part1.ino}!alphabetTaskExecutionTime@{alphabetTaskExecutionTime}}
+\index{alphabetTaskExecutionTime@{alphabetTaskExecutionTime}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{alphabetTaskExecutionTime}{alphabetTaskExecutionTime}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_ae03e873e30fb2f78c6292fc4e2614e54} 
+const Tick\+Type\+\_\+t alphabet\+Task\+Execution\+Time = 13000 / port\+TICK\+\_\+\+PERIOD\+\_\+\+MS}
+
+
+
+13 seconds 
+
+\Hypertarget{lab4_part1_8ino_a2e782932f0bf2f1fa35ac3bfa9a8b5cc}\index{lab4Part1.ino@{lab4Part1.ino}!counterTaskExecutionTime@{counterTaskExecutionTime}}
+\index{counterTaskExecutionTime@{counterTaskExecutionTime}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{counterTaskExecutionTime}{counterTaskExecutionTime}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a2e782932f0bf2f1fa35ac3bfa9a8b5cc} 
+const Tick\+Type\+\_\+t counter\+Task\+Execution\+Time = 2000 / port\+TICK\+\_\+\+PERIOD\+\_\+\+MS}
+
+
+
+2 seconds 
+
+\Hypertarget{lab4_part1_8ino_a75818cb094cf69f33e62ddf759c8daab}\index{lab4Part1.ino@{lab4Part1.ino}!ledTaskExecutionTime@{ledTaskExecutionTime}}
+\index{ledTaskExecutionTime@{ledTaskExecutionTime}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{ledTaskExecutionTime}{ledTaskExecutionTime}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a75818cb094cf69f33e62ddf759c8daab} 
+const Tick\+Type\+\_\+t led\+Task\+Execution\+Time = 50000 / port\+TICK\+\_\+\+PERIOD\+\_\+\+MS}
+
+
+
+Total execution times for each task (in ticks). 
+
+500 ms \Hypertarget{lab4_part1_8ino_a1fb03c229171c45dee3187903d2cbcf3}\index{lab4Part1.ino@{lab4Part1.ino}!remainingAlphabetTime@{remainingAlphabetTime}}
+\index{remainingAlphabetTime@{remainingAlphabetTime}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{remainingAlphabetTime}{remainingAlphabetTime}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a1fb03c229171c45dee3187903d2cbcf3} 
+volatile Tick\+Type\+\_\+t remaining\+Alphabet\+Time = \mbox{\hyperlink{lab4_part1_8ino_ae03e873e30fb2f78c6292fc4e2614e54}{alphabet\+Task\+Execution\+Time}}}
+
+\Hypertarget{lab4_part1_8ino_a562419e3d9d311efcc74859e5b3adf44}\index{lab4Part1.ino@{lab4Part1.ino}!remainingCounterTime@{remainingCounterTime}}
+\index{remainingCounterTime@{remainingCounterTime}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{remainingCounterTime}{remainingCounterTime}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a562419e3d9d311efcc74859e5b3adf44} 
+volatile Tick\+Type\+\_\+t remaining\+Counter\+Time = \mbox{\hyperlink{lab4_part1_8ino_a2e782932f0bf2f1fa35ac3bfa9a8b5cc}{counter\+Task\+Execution\+Time}}}
+
+\Hypertarget{lab4_part1_8ino_a984bdb71413c08cf09f7d11793877dfa}\index{lab4Part1.ino@{lab4Part1.ino}!remainingLedTime@{remainingLedTime}}
+\index{remainingLedTime@{remainingLedTime}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{remainingLedTime}{remainingLedTime}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a984bdb71413c08cf09f7d11793877dfa} 
+volatile Tick\+Type\+\_\+t remaining\+Led\+Time = \mbox{\hyperlink{lab4_part1_8ino_a75818cb094cf69f33e62ddf759c8daab}{led\+Task\+Execution\+Time}}}
+
+
+
+Remaining execution times for SRT scheduling algorithm. 
+
+\Hypertarget{lab4_part1_8ino_aae2cf475de5acc8624674bc3f64a556f}\index{lab4Part1.ino@{lab4Part1.ino}!TaskHandle\_Alphabet@{TaskHandle\_Alphabet}}
+\index{TaskHandle\_Alphabet@{TaskHandle\_Alphabet}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{TaskHandle\_Alphabet}{TaskHandle\_Alphabet}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_aae2cf475de5acc8624674bc3f64a556f} 
+Task\+Handle\+\_\+t Task\+Handle\+\_\+\+Alphabet}
+
+
+
+Handle for alphabet task. 
+
+\Hypertarget{lab4_part1_8ino_ad8dae45efc3452fb6c3a3fd858782449}\index{lab4Part1.ino@{lab4Part1.ino}!TaskHandle\_Counter@{TaskHandle\_Counter}}
+\index{TaskHandle\_Counter@{TaskHandle\_Counter}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{TaskHandle\_Counter}{TaskHandle\_Counter}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_ad8dae45efc3452fb6c3a3fd858782449} 
+Task\+Handle\+\_\+t Task\+Handle\+\_\+\+Counter}
+
+
+
+Handle for counter task. 
+
+\Hypertarget{lab4_part1_8ino_af53fb495641a4bb2e63eb19609df61ad}\index{lab4Part1.ino@{lab4Part1.ino}!TaskHandle\_LED@{TaskHandle\_LED}}
+\index{TaskHandle\_LED@{TaskHandle\_LED}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{TaskHandle\_LED}{TaskHandle\_LED}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_af53fb495641a4bb2e63eb19609df61ad} 
+Task\+Handle\+\_\+t Task\+Handle\+\_\+\+LED}
+
+
+
+Task handles for managing Free\+RTOS tasks. 
+
+Handle for LED task \Hypertarget{lab4_part1_8ino_a0995587169c8c6995afe4c6c6801abbd}\index{lab4Part1.ino@{lab4Part1.ino}!TaskHandle\_Scheduler@{TaskHandle\_Scheduler}}
+\index{TaskHandle\_Scheduler@{TaskHandle\_Scheduler}!lab4Part1.ino@{lab4Part1.ino}}
+\doxysubsubsection{\texorpdfstring{TaskHandle\_Scheduler}{TaskHandle\_Scheduler}}
+{\footnotesize\ttfamily \label{lab4_part1_8ino_a0995587169c8c6995afe4c6c6801abbd} 
+Task\+Handle\+\_\+t Task\+Handle\+\_\+\+Scheduler}
+
+
+
+Handle for scheduler task. 
+

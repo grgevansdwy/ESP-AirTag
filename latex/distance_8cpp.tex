@@ -1,0 +1,149 @@
+\doxysection{scanner/distance.cpp File Reference}
+\hypertarget{distance_8cpp}{}\label{distance_8cpp}\index{scanner/distance.cpp@{scanner/distance.cpp}}
+
+
+Implementation of RSSI averaging and distance estimation utilities.  
+
+
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include "{}distance.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{distance_8cpp_a350602292496b5d31d2218914daabc83}{update\+Rssi\+Avg}} (int rssi)
+\begin{DoxyCompactList}\small\item\em Updates the running average of the received signal strength indicator (RSSI). \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{distance_8cpp_a1e6d3aa6a0998193041b637af99fe4a0}{estimate\+Distance\+Meters}} (float rssi, float \mbox{\hyperlink{distance_8cpp_a17eff3c694ad953ed807e7e8111f619b}{tx\+Power}}, float n)
+\begin{DoxyCompactList}\small\item\em Estimates the distance (in meters) from RSSI using the log-\/distance path loss model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{distance_8cpp_a4a1d21c5fbf6e45b76781c7391e57d40}{has\+Avg}} = false
+\begin{DoxyCompactList}\small\item\em Flag to indicate whether the RSSI average has been initialized. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{distance_8cpp_aca093b4a70588122036726c7ce3f00ea}{rssi\+Avg}} = 0.\+0f
+\begin{DoxyCompactList}\small\item\em Stores the current smoothed RSSI average. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{distance_8cpp_a17eff3c694ad953ed807e7e8111f619b}{tx\+Power}} = -\/52.\+0f
+\begin{DoxyCompactList}\small\item\em Transmitter power at 1 meter (in d\+Bm). \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{distance_8cpp_a243c75785d3db69933f1b279c929cc34}{n\+Factor}} = 2.\+5f
+\begin{DoxyCompactList}\small\item\em Path-\/loss exponent (environmental factor). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of RSSI averaging and distance estimation utilities. 
+
+This file provides definitions for global parameters and functions that help smooth RSSI (Received Signal Strength Indicator) values and estimate distance based on the log-\/distance path loss model.
+
+The algorithm uses exponential smoothing for RSSI and applies the following formula for distance estimation\+:
+
+\[  d = 10^{\frac{(txPower - rssi)}{10 \cdot n}}
+\]
+
+where\+:
+\begin{DoxyItemize}
+\item $d$ is the estimated distance in meters,
+\item $rssi$ is the measured signal strength in d\+Bm,
+\item $txPower$ is the RSSI at 1 meter reference distance,
+\item $n$ is the path-\/loss exponent. 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{distance_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{distance_8cpp_a1e6d3aa6a0998193041b637af99fe4a0}\index{distance.cpp@{distance.cpp}!estimateDistanceMeters@{estimateDistanceMeters}}
+\index{estimateDistanceMeters@{estimateDistanceMeters}!distance.cpp@{distance.cpp}}
+\doxysubsubsection{\texorpdfstring{estimateDistanceMeters()}{estimateDistanceMeters()}}
+{\footnotesize\ttfamily \label{distance_8cpp_a1e6d3aa6a0998193041b637af99fe4a0} 
+float estimate\+Distance\+Meters (\begin{DoxyParamCaption}\item[{float}]{rssi}{, }\item[{float}]{tx\+Power}{, }\item[{float}]{n}{}\end{DoxyParamCaption})}
+
+
+
+Estimates the distance (in meters) from RSSI using the log-\/distance path loss model. 
+
+Estimate distance from RSSI using the log-\/distance path loss model.
+
+Computes an approximate distance to the transmitter based on the difference between the measured RSSI and the known transmit power at 1 meter.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em rssi} & Received signal strength indicator (in d\+Bm). \\
+\hline
+\mbox{\texttt{in}}  & {\em tx\+Power} & Transmitter power at 1 meter (in d\+Bm). \\
+\hline
+\mbox{\texttt{in}}  & {\em n} & Path-\/loss exponent (environmental factor). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Estimated distance in meters. 
+\end{DoxyReturn}
+\Hypertarget{distance_8cpp_a350602292496b5d31d2218914daabc83}\index{distance.cpp@{distance.cpp}!updateRssiAvg@{updateRssiAvg}}
+\index{updateRssiAvg@{updateRssiAvg}!distance.cpp@{distance.cpp}}
+\doxysubsubsection{\texorpdfstring{updateRssiAvg()}{updateRssiAvg()}}
+{\footnotesize\ttfamily \label{distance_8cpp_a350602292496b5d31d2218914daabc83} 
+void update\+Rssi\+Avg (\begin{DoxyParamCaption}\item[{int}]{rssi}{}\end{DoxyParamCaption})}
+
+
+
+Updates the running average of the received signal strength indicator (RSSI). 
+
+Update the exponential moving average of the RSSI.
+
+Applies exponential smoothing with a fixed factor $\alpha = 0.2$. This reduces noise in instantaneous RSSI readings.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em rssi} & Current measured RSSI value (in d\+Bm). \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-var-members}
+\Hypertarget{distance_8cpp_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{distance_8cpp_a4a1d21c5fbf6e45b76781c7391e57d40}\index{distance.cpp@{distance.cpp}!hasAvg@{hasAvg}}
+\index{hasAvg@{hasAvg}!distance.cpp@{distance.cpp}}
+\doxysubsubsection{\texorpdfstring{hasAvg}{hasAvg}}
+{\footnotesize\ttfamily \label{distance_8cpp_a4a1d21c5fbf6e45b76781c7391e57d40} 
+bool has\+Avg = false}
+
+
+
+Flag to indicate whether the RSSI average has been initialized. 
+
+Flag indicating whether an RSSI average has been initialized. \Hypertarget{distance_8cpp_a243c75785d3db69933f1b279c929cc34}\index{distance.cpp@{distance.cpp}!nFactor@{nFactor}}
+\index{nFactor@{nFactor}!distance.cpp@{distance.cpp}}
+\doxysubsubsection{\texorpdfstring{nFactor}{nFactor}}
+{\footnotesize\ttfamily \label{distance_8cpp_a243c75785d3db69933f1b279c929cc34} 
+float n\+Factor = 2.\+5f}
+
+
+
+Path-\/loss exponent (environmental factor). 
+
+Typical values\+:
+\begin{DoxyItemize}
+\item \texorpdfstring{$\sim$}{\string~}2.0 in free space
+\item 2.\+7–4.0 in indoor/obstructed environments
+\end{DoxyItemize}
+
+Should be tuned experimentally for best accuracy. \Hypertarget{distance_8cpp_aca093b4a70588122036726c7ce3f00ea}\index{distance.cpp@{distance.cpp}!rssiAvg@{rssiAvg}}
+\index{rssiAvg@{rssiAvg}!distance.cpp@{distance.cpp}}
+\doxysubsubsection{\texorpdfstring{rssiAvg}{rssiAvg}}
+{\footnotesize\ttfamily \label{distance_8cpp_aca093b4a70588122036726c7ce3f00ea} 
+float rssi\+Avg = 0.\+0f}
+
+
+
+Stores the current smoothed RSSI average. 
+
+Exponential moving average of the RSSI value. \Hypertarget{distance_8cpp_a17eff3c694ad953ed807e7e8111f619b}\index{distance.cpp@{distance.cpp}!txPower@{txPower}}
+\index{txPower@{txPower}!distance.cpp@{distance.cpp}}
+\doxysubsubsection{\texorpdfstring{txPower}{txPower}}
+{\footnotesize\ttfamily \label{distance_8cpp_a17eff3c694ad953ed807e7e8111f619b} 
+float tx\+Power = -\/52.\+0f}
+
+
+
+Transmitter power at 1 meter (in d\+Bm). 
+
+Reference transmit power (measured RSSI at 1 meter distance).
+
+This value should be tuned based on calibration measurements. 

@@ -1,0 +1,227 @@
+\doxysection{scanner/\+BLEScanner.h File Reference}
+\hypertarget{_b_l_e_scanner_8h}{}\label{_b_l_e_scanner_8h}\index{scanner/BLEScanner.h@{scanner/BLEScanner.h}}
+
+
+BLE client interface for connecting to a peripheral, handling button writes, and subscribing to IMU notifications.  
+
+
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$BLEDevice.\+h$>$}\newline
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/queue.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_b_l_e_scanner_8h_abd60e1b76b5c50dd9cd637ea12572eb9}{set\+IMUQueue}} (Queue\+Handle\+\_\+t q)
+\begin{DoxyCompactList}\small\item\em Provide a Free\+RTOS queue for IMU notifications. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_b_l_e_scanner_8h_a5ac7cf442cd3b443554624883671b7e2}{write\+Btn\+State}} (bool pressed)
+\begin{DoxyCompactList}\small\item\em Write a button state (pressed or released) to the remote button characteristic. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_b_l_e_scanner_8h_a823e98bf49dadbbb0a253ecd13f5327e}{connect\+To\+Peripheral}} (BLEAddress addr)
+\begin{DoxyCompactList}\small\item\em Connect to a BLE peripheral, discover services/characteristics, and subscribe to IMU notifications. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+volatile bool \mbox{\hyperlink{_b_l_e_scanner_8h_ae4e4ce6a658b77aa4bb7753403794776}{connected}}
+\begin{DoxyCompactList}\small\item\em Indicates whether the BLE client is currently connected to a peripheral. \end{DoxyCompactList}\item 
+BLEClient \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{_b_l_e_scanner_8h_a475f605cd52d79a3ebf181514e37d7d1}{client}}
+\begin{DoxyCompactList}\small\item\em Pointer to the active BLE client instance. \end{DoxyCompactList}\item 
+BLERemote\+Characteristic \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{_b_l_e_scanner_8h_a1dd234b237f1c2dc0e0c1f1478fe82a9}{btn\+Remote\+Char}}
+\begin{DoxyCompactList}\small\item\em Remote characteristic pointer for the button service. \end{DoxyCompactList}\item 
+BLERemote\+Characteristic \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{_b_l_e_scanner_8h_a097e3c277c500b4b4cc005efb8332548}{imu\+Remote\+Char}}
+\begin{DoxyCompactList}\small\item\em Remote characteristic pointer for the IMU service. \end{DoxyCompactList}\item 
+BLEUUID \mbox{\hyperlink{_b_l_e_scanner_8h_a7a543741fb3d4beea43ca8520ce22862}{svc\+UUID}}
+\begin{DoxyCompactList}\small\item\em UUID for the target BLE service. \end{DoxyCompactList}\item 
+BLEUUID \mbox{\hyperlink{_b_l_e_scanner_8h_a7e5fe6636972b5e3774a4d0a5d15978f}{btn\+UUID}}
+\begin{DoxyCompactList}\small\item\em UUID for the button characteristic. \end{DoxyCompactList}\item 
+BLEUUID \mbox{\hyperlink{_b_l_e_scanner_8h_a8a9c97643b6cfc8d63cb8c494c652282}{imu\+UUID}}
+\begin{DoxyCompactList}\small\item\em UUID for the IMU characteristic. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+BLE client interface for connecting to a peripheral, handling button writes, and subscribing to IMU notifications. 
+
+This module provides the necessary global variables and function declarations to manage BLE client connections, discover services and characteristics, and handle communication with a remote BLE peripheral. 
+
+\label{doc-func-members}
+\Hypertarget{_b_l_e_scanner_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_b_l_e_scanner_8h_a823e98bf49dadbbb0a253ecd13f5327e}\index{BLEScanner.h@{BLEScanner.h}!connectToPeripheral@{connectToPeripheral}}
+\index{connectToPeripheral@{connectToPeripheral}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{connectToPeripheral()}{connectToPeripheral()}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a823e98bf49dadbbb0a253ecd13f5327e} 
+bool connect\+To\+Peripheral (\begin{DoxyParamCaption}\item[{BLEAddress}]{addr}{}\end{DoxyParamCaption})}
+
+
+
+Connect to a BLE peripheral, discover services/characteristics, and subscribe to IMU notifications. 
+
+Handles the connection process including validation of the required service UUIDs and subscription setup.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em addr} & BLE address of the peripheral to connect to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if connection and subscription succeed, false otherwise.
+\end{DoxyReturn}
+Connect to a BLE peripheral, discover services/characteristics, and subscribe to IMU notifications.
+
+This function performs the following steps\+:
+\begin{DoxyItemize}
+\item Creates a BLE client and attempts to connect to the specified peripheral.
+\item Requests a larger MTU (may or may not be honored by peer).
+\item Discovers the configured service, button, and IMU characteristics.
+\item Validates that the button characteristic supports write/write-\/no-\/response.
+\item Validates that the IMU characteristic supports notify.
+\item Subscribes to IMU notifications.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em addr} & BLE address of the peripheral to connect to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if connection and subscription succeed, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{_b_l_e_scanner_8h_abd60e1b76b5c50dd9cd637ea12572eb9}\index{BLEScanner.h@{BLEScanner.h}!setIMUQueue@{setIMUQueue}}
+\index{setIMUQueue@{setIMUQueue}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{setIMUQueue()}{setIMUQueue()}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_abd60e1b76b5c50dd9cd637ea12572eb9} 
+void set\+IMUQueue (\begin{DoxyParamCaption}\item[{Queue\+Handle\+\_\+t}]{q}{}\end{DoxyParamCaption})}
+
+
+
+Provide a Free\+RTOS queue for IMU notifications. 
+
+This queue is used to receive IMU status updates (e.\+g., motion detected as 0/1).
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em q} & Queue handle to store IMU notification values.\\
+\hline
+\end{DoxyParams}
+Provide a Free\+RTOS queue for IMU notifications.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em q} & Queue handle that will receive IMU notification flags (0 or 1). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{_b_l_e_scanner_8h_a5ac7cf442cd3b443554624883671b7e2}\index{BLEScanner.h@{BLEScanner.h}!writeBtnState@{writeBtnState}}
+\index{writeBtnState@{writeBtnState}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{writeBtnState()}{writeBtnState()}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a5ac7cf442cd3b443554624883671b7e2} 
+bool write\+Btn\+State (\begin{DoxyParamCaption}\item[{bool}]{pressed}{}\end{DoxyParamCaption})}
+
+
+
+Write a button state (pressed or released) to the remote button characteristic. 
+
+Sends a single byte (0 or 1) to the peripheral.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em pressed} & Boolean indicating button state (true = pressed, false = released). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the write was successful, false otherwise.
+\end{DoxyReturn}
+Write a button state (pressed or released) to the remote button characteristic.
+
+Attempts to send the button state (pressed or released) as a single byte (0 or 1) to the remote characteristic. Prefers "{}write without response"{} if available, otherwise falls back to "{}write with response"{}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em pressed} & True if button is pressed, false if released. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the value was successfully written, false otherwise. 
+\end{DoxyReturn}
+
+
+\label{doc-var-members}
+\Hypertarget{_b_l_e_scanner_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{_b_l_e_scanner_8h_a1dd234b237f1c2dc0e0c1f1478fe82a9}\index{BLEScanner.h@{BLEScanner.h}!btnRemoteChar@{btnRemoteChar}}
+\index{btnRemoteChar@{btnRemoteChar}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{btnRemoteChar}{btnRemoteChar}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a1dd234b237f1c2dc0e0c1f1478fe82a9} 
+BLERemote\+Characteristic\texorpdfstring{$\ast$}{*} btn\+Remote\+Char\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Remote characteristic pointer for the button service. 
+
+Remote characteristic pointer for the button service. \Hypertarget{_b_l_e_scanner_8h_a7e5fe6636972b5e3774a4d0a5d15978f}\index{BLEScanner.h@{BLEScanner.h}!btnUUID@{btnUUID}}
+\index{btnUUID@{btnUUID}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{btnUUID}{btnUUID}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a7e5fe6636972b5e3774a4d0a5d15978f} 
+BLEUUID btn\+UUID\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+UUID for the button characteristic. 
+
+Must be set from the main application.
+
+UUID for the button characteristic. \Hypertarget{_b_l_e_scanner_8h_a475f605cd52d79a3ebf181514e37d7d1}\index{BLEScanner.h@{BLEScanner.h}!client@{client}}
+\index{client@{client}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{client}{client}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a475f605cd52d79a3ebf181514e37d7d1} 
+BLEClient\texorpdfstring{$\ast$}{*} client\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Pointer to the active BLE client instance. 
+
+\Hypertarget{_b_l_e_scanner_8h_ae4e4ce6a658b77aa4bb7753403794776}\index{BLEScanner.h@{BLEScanner.h}!connected@{connected}}
+\index{connected@{connected}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{connected}{connected}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_ae4e4ce6a658b77aa4bb7753403794776} 
+volatile bool connected\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Indicates whether the BLE client is currently connected to a peripheral. 
+
+Indicates whether the BLE client is currently connected to a peripheral.
+
+Indicates whether the client is connected to a BLE peripheral. \Hypertarget{_b_l_e_scanner_8h_a097e3c277c500b4b4cc005efb8332548}\index{BLEScanner.h@{BLEScanner.h}!imuRemoteChar@{imuRemoteChar}}
+\index{imuRemoteChar@{imuRemoteChar}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{imuRemoteChar}{imuRemoteChar}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a097e3c277c500b4b4cc005efb8332548} 
+BLERemote\+Characteristic\texorpdfstring{$\ast$}{*} imu\+Remote\+Char\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Remote characteristic pointer for the IMU service. 
+
+Remote characteristic pointer for the IMU service. \Hypertarget{_b_l_e_scanner_8h_a8a9c97643b6cfc8d63cb8c494c652282}\index{BLEScanner.h@{BLEScanner.h}!imuUUID@{imuUUID}}
+\index{imuUUID@{imuUUID}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{imuUUID}{imuUUID}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a8a9c97643b6cfc8d63cb8c494c652282} 
+BLEUUID imu\+UUID\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+UUID for the IMU characteristic. 
+
+Must be set from the main application.
+
+UUID for the IMU characteristic. \Hypertarget{_b_l_e_scanner_8h_a7a543741fb3d4beea43ca8520ce22862}\index{BLEScanner.h@{BLEScanner.h}!svcUUID@{svcUUID}}
+\index{svcUUID@{svcUUID}!BLEScanner.h@{BLEScanner.h}}
+\doxysubsubsection{\texorpdfstring{svcUUID}{svcUUID}}
+{\footnotesize\ttfamily \label{_b_l_e_scanner_8h_a7a543741fb3d4beea43ca8520ce22862} 
+BLEUUID svc\+UUID\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+UUID for the target BLE service. 
+
+Must be set from the main application.
+
+UUID for the target BLE service. 

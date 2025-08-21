@@ -1,0 +1,125 @@
+\doxysection{IMU\+\_\+\+REGISTER\+\_\+\+MAP.\+h}
+\hypertarget{_i_m_u___r_e_g_i_s_t_e_r___m_a_p_8h_source}{}\label{_i_m_u___r_e_g_i_s_t_e_r___m_a_p_8h_source}\index{server/IMU\_REGISTER\_MAP.h@{server/IMU\_REGISTER\_MAP.h}}
+\mbox{\hyperlink{_i_m_u___r_e_g_i_s_t_e_r___m_a_p_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifndef\ MPU6500REGS\_H\_}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ MPU6500REGS\_H\_}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ REG\_SELF\_TEST\_X\_GYRO\ \ \ \ \ \ 0x00\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ REG\_SELF\_TEST\_Y\_GYRO\ \ \ \ \ \ 0x01\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ REG\_SELF\_TEST\_Z\_GYRO\ \ \ \ \ \ 0x02\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ REG\_SELF\_TEST\_X\_ACCEL\ \ \ \ \ 0x0D\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ REG\_SELF\_TEST\_Y\_ACCEL\ \ \ \ \ 0x0E\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ REG\_SELF\_TEST\_Z\_ACCEL\ \ \ \ \ 0x0F\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ REG\_XG\_OFFSET\_H\ \ \ \ \ \ \ \ \ \ \ 0x13\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ REG\_XG\_OFFSET\_L\ \ \ \ \ \ \ \ \ \ \ 0x14\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ REG\_YG\_OFFSET\_H\ \ \ \ \ \ \ \ \ \ \ 0x15\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ REG\_YG\_OFFSET\_L\ \ \ \ \ \ \ \ \ \ \ 0x16\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#define\ REG\_ZG\_OFFSET\_H\ \ \ \ \ \ \ \ \ \ \ 0x17\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ REG\_ZG\_OFFSET\_L\ \ \ \ \ \ \ \ \ \ \ 0x18\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ REG\_SMPLRT\_DIV\ \ \ \ \ \ \ \ \ \ \ \ 0x19\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ REG\_CONFIG\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1A\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_CONFIG\ \ \ \ \ \ \ \ \ \ \ 0x1B\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_CONFIG\ \ \ \ \ \ \ \ \ \ 0x1C\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_CONFIG2\ \ \ \ \ \ \ \ \ 0x1D\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ REG\_LP\_ACCEL\_ODR\ \ \ \ \ \ \ \ \ \ 0x1E\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ REG\_WOM\_THR\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x1F\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ REG\_FIFO\_EN\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x23\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ REG\_I2C\_MST\_CTRL\ \ \ \ \ \ \ \ \ \ 0x24\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV0\_ADDR\ \ \ \ \ \ \ \ \ 0x25\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV0\_REG\ \ \ \ \ \ \ \ \ \ 0x26\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV0\_CTRL\ \ \ \ \ \ \ \ \ 0x27\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV1\_ADDR\ \ \ \ \ \ \ \ \ 0x28\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV1\_REG\ \ \ \ \ \ \ \ \ \ 0x29\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV1\_CTRL\ \ \ \ \ \ \ \ \ 0x2A\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV2\_ADDR\ \ \ \ \ \ \ \ \ 0x2B\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV2\_REG\ \ \ \ \ \ \ \ \ \ 0x2C\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV2\_CTRL\ \ \ \ \ \ \ \ \ 0x2D\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV3\_ADDR\ \ \ \ \ \ \ \ \ 0x2E\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV3\_REG\ \ \ \ \ \ \ \ \ \ 0x2F\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV3\_CTRL\ \ \ \ \ \ \ \ \ 0x30\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV4\_ADDR\ \ \ \ \ \ \ \ \ 0x31\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV4\_REG\ \ \ \ \ \ \ \ \ \ 0x32\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV4\_DO\ \ \ \ \ \ \ \ \ \ \ 0x33\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV4\_CTRL\ \ \ \ \ \ \ \ \ 0x34\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV4\_DI\ \ \ \ \ \ \ \ \ \ \ 0x35\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#define\ REG\_I2C\_MST\_STATUS\ \ \ \ \ \ \ \ 0x36\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ REG\_INT\_PIN\_CFG\ \ \ \ \ \ \ \ \ \ \ 0x37\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ REG\_INT\_ENABLE\ \ \ \ \ \ \ \ \ \ \ \ 0x38\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ REG\_INT\_STATUS\ \ \ \ \ \ \ \ \ \ \ \ 0x3A\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_XOUT\_H\ \ \ \ \ \ \ \ \ \ 0x3B\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_XOUT\_L\ \ \ \ \ \ \ \ \ \ 0x3C\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_YOUT\_H\ \ \ \ \ \ \ \ \ \ 0x3D\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_YOUT\_L\ \ \ \ \ \ \ \ \ \ 0x3E\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_ZOUT\_H\ \ \ \ \ \ \ \ \ \ 0x3F\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ REG\_ACCEL\_ZOUT\_L\ \ \ \ \ \ \ \ \ \ 0x40\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ REG\_TEMP\_OUT\_H\ \ \ \ \ \ \ \ \ \ \ \ 0x41\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ REG\_TEMP\_OUT\_L\ \ \ \ \ \ \ \ \ \ \ \ 0x42\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_XOUT\_H\ \ \ \ \ \ \ \ \ \ \ 0x43\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_XOUT\_L\ \ \ \ \ \ \ \ \ \ \ 0x44\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_YOUT\_H\ \ \ \ \ \ \ \ \ \ \ 0x45\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_YOUT\_L\ \ \ \ \ \ \ \ \ \ \ 0x46\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_ZOUT\_H\ \ \ \ \ \ \ \ \ \ \ 0x47\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ REG\_GYRO\_ZOUT\_L\ \ \ \ \ \ \ \ \ \ \ 0x48\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ REG\_EXT\_SENS\_DATA\_00\ \ \ \ \ \ 0x49\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ REG\_EXT\_SENS\_DATA\_23\ \ \ \ \ \ 0x60\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV0\_DO\ \ \ \ \ \ \ \ \ \ \ 0x63\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV1\_DO\ \ \ \ \ \ \ \ \ \ \ 0x64\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV2\_DO\ \ \ \ \ \ \ \ \ \ \ 0x65\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ REG\_I2C\_SLV3\_DO\ \ \ \ \ \ \ \ \ \ \ 0x66\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ REG\_I2C\_MST\_DELAY\_CTRL\ \ \ \ 0x67\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ REG\_SIGNAL\_PATH\_RESET\ \ \ \ \ 0x68\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ REG\_MOT\_DETECT\_CTRL\ \ \ \ \ \ \ 0x69\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#define\ REG\_USER\_CTRL\ \ \ \ \ \ \ \ \ \ \ \ \ 0x6A\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#define\ REG\_PWR\_MGMT\_1\ \ \ \ \ \ \ \ \ \ \ \ 0x6B\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#define\ REG\_PWR\_MGMT\_2\ \ \ \ \ \ \ \ \ \ \ \ 0x6C\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ REG\_FIFO\_COUNTH\ \ \ \ \ \ \ \ \ \ \ 0x72\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ REG\_FIFO\_COUNTL\ \ \ \ \ \ \ \ \ \ \ 0x73\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#define\ REG\_FIFO\_R\_W\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x74\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ REG\_WHO\_AM\_I\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x75\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#define\ REG\_XA\_OFFSET\_H\ \ \ \ \ \ \ \ \ \ \ 0x77\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#define\ REG\_XA\_OFFSET\_L\ \ \ \ \ \ \ \ \ \ \ 0x78\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#define\ REG\_YA\_OFFSET\_H\ \ \ \ \ \ \ \ \ \ \ 0x7A\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#define\ REG\_YA\_OFFSET\_L\ \ \ \ \ \ \ \ \ \ \ 0x7B\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#define\ REG\_ZA\_OFFSET\_H\ \ \ \ \ \ \ \ \ \ \ 0x7D\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#define\ REG\_ZA\_OFFSET\_L\ \ \ \ \ \ \ \ \ \ \ 0x7E\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#define\ REG\_MAG\_XOUT\_H\ \ \ \ \ \ \ \ \ \ \ \ 0x03\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#define\ REG\_MAG\_XOUT\_L\ \ \ \ \ \ \ \ \ \ \ \ 0x04\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#define\ REG\_MAG\_YOUT\_H\ \ \ \ \ \ \ \ \ \ \ \ 0x05\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#define\ REG\_MAG\_YOUT\_L\ \ \ \ \ \ \ \ \ \ \ \ 0x06\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#define\ REG\_MAG\_ZOUT\_H\ \ \ \ \ \ \ \ \ \ \ \ 0x07\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ REG\_MAG\_ZOUT\_L\ \ \ \ \ \ \ \ \ \ \ \ 0x08\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00165\ \ \textcolor{comment}{//\ end\ of\ MPU6500\_Registers}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#define\ WHO\_AM\_I\_MPU6500\ \ \ \ \ \ \ \ \ \ 0x70\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#define\ WHO\_AM\_I\_MPU9250\ \ \ \ \ \ \ \ \ \ 0x71\ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#define\ PWR\_DEVICE\_RESET\ \ \ \ \ \ \ \ \ \ 0x80\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#define\ PWR\_SLEEP\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x40\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#define\ PWR\_CYCLE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x20\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#define\ PWR\_CLKSEL\_INTERNAL\ \ \ \ \ \ \ 0x00\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#define\ PWR\_CLKSEL\_PLL\_XGYRO\ \ \ \ \ \ 0x01\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\#define\ PWR\_CLKSEL\_PLL\_YGYRO\ \ \ \ \ \ 0x02\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#define\ PWR\_CLKSEL\_PLL\_ZGYRO\ \ \ \ \ \ 0x03\ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00186\ \ \textcolor{comment}{//\ end\ of\ MPU6500\_Common}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ MPU6500REGS\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
