@@ -33,8 +33,15 @@
 // ==============================================
 // Macros / Pin Definitions
 // ==============================================
-#define BUZZZER_PIN 42 // GPIO pin for button (not connected to peripheral)
+#define BUZZER_PIN 42 // GPIO pin for button (not connected to peripheral)
 #define RESET_PIN 41
+#define RFID_PIN 40
+#define PIN_SCK  13   // RC522 SCK
+#define PIN_MISO 11   // RC522 MISO
+#define PIN_MOSI 12   // RC522 MOSI
+#define PIN_SS 14   // RC522 SDA/SS (chip select)
+#define PIN_RST 10   // RC522 RST
+
 // ==============================================
 // Function Prototypes (separate prototypes vs. impls)
 // ==============================================
@@ -42,14 +49,16 @@ void BLEScannerTask(void *pvParameters);
 void distanceTask(void *pvParameters);
 void UITask(void *pvParameters);
 void buttonTask(void *pvParameters);
-// void RFIDTask(void *pvParameters);
-// void accessTask(void *pvParameters);
+void RFIDTask(void *pvParameters);
+void resetButtonTask(void *pvParameters);
 
 // ==============================================
 // Global Task Handles
 // ==============================================
 static TaskHandle_t TaskHandle_BLEScanner    = nullptr;
-// static TaskHandle_t TaskHandle_Access = nullptr;
+TaskHandle_t UITaskHandle;
+TaskHandle_t ButtonTaskHandle;
+TaskHandle_t RFIDTaskHandle;
 
 // ==============================================
 // Global Queue Handles
@@ -57,15 +66,7 @@ static TaskHandle_t TaskHandle_BLEScanner    = nullptr;
 QueueHandle_t IMUQ;
 QueueHandle_t RSSIQ;
 QueueHandle_t disQ;
-TaskHandle_t LCDTaskHandle;
-TaskHandle_t ButtonTaskHandle;
-TaskHandle_t RFIDTaskHandle;
 QueueSetHandle_t uiSet = nullptr;
-
-
-// ==============================================
-// Semaphore
-// ==============================================
 
 // ==============================================
 // Global Variable
@@ -81,7 +82,9 @@ uint32_t startTime;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 MFRC522 rfid(PIN_SS, PIN_RST);
 
-byte AUTH_UID[] = { 0xBF, 0xFB, 0x22, 0x43};
+
+
+byte AUTH_UID[] = { 0x04, 0x81, 0x70, 0x0A, 0x9C, 0x14, 0x90};
 
 // ==============================================
 // Task
@@ -142,7 +145,7 @@ void BLEScannerTask(void *pvParameters) {
       xQueueOverwrite(RSSIQ, &rssi); // Push button state to queue
     } // Avoid busy-waiting
     
-    vTaskDelay(pdMS_TO_TICKS(50));
+    vTaskDelay(pdMS_TO_TICKS(31));
   }
 }
 
@@ -152,19 +155,20 @@ void distanceTask(void *pvParameters) {
     if (xQueueReceive(RSSIQ, &rssi, portMAX_DELAY) == pdTRUE) {
       updateRssiAvg(rssi); // smoothen the rssi
       float distance = estimateDistanceMeters(rssiAvg, txPower, nFactor); // convert rssi to distance
-      //Serial.printf("Raw RSSI: %d dBm | Smoothed RSSI: %.2f dBm | Distance: %.2f m\n", rssi, rssiAvg, distance);
+      Serial.printf("Raw RSSI: %d dBm | Smoothed RSSI: %.2f dBm | Distance: %.2f m\n", rssi, rssiAvg, distance);
       xQueueOverwrite(disQ, &distance);
     }
   }
-  vTaskDelay(pdMS_TO_TICKS(50));
+  vTaskDelay(pdMS_TO_TICKS(20));
 }
 
 void UITask(void *pvParameters) {
-  Wire.begin(8, 9);
   lcd.init();
   lcd.backlight();
+  lcd.clear();
   uint8_t movingFlag;
   float distance;
+  vTaskSuspend(NULL);
   for (;;) {
      xQueueSetMemberHandle member =
         xQueueSelectFromSet(uiSet, portMAX_DELAY);  // wake on either queue
@@ -198,6 +202,7 @@ void UITask(void *pvParameters) {
 void buttonTask(void *pvParameters) {
   pinMode(BUZZER_PIN, INPUT_PULLUP); // Button pin as input with pull-up
   bool lastButton = HIGH;   // Input pull-up → HIGH when unpressed
+  vTaskSuspend(NULL);
   while (1) {
     bool currentButton = digitalRead(BUZZER_PIN);
     // Edge detection: detect falling edge (pressed)
@@ -218,9 +223,9 @@ void resetButtonTask(void *pvParameters) {
   bool lastBtnState = HIGH;
   pinMode(RESET_PIN, INPUT_PULLUP);
   for (;;) {
-    bool now = digitalRead(BUTTON_PIN);
+    bool now = digitalRead(RESET_PIN);
     unsigned long time = millis();
-    if(now != lastBtnState && ((time - lastBtnChange) > 40)){ // only change if the last button state is different and only once every 40ms
+    if(now != lastBtnState && ((time - lastBtnChange) > 40)) { // only change if the last button state is different and only once every 40ms
       lastBtnChange = time;
       lastBtnState = now;
       if(now == LOW){ // reset if the state is low
@@ -228,13 +233,14 @@ void resetButtonTask(void *pvParameters) {
         rfid.PCD_Init();
         Serial.println("RFID reset.");
         Serial.println("RFID Locked.");
-        vTaskSuspend(ButtonTaskHandle);
-        vTaskSuspend(LCDTaskHandle);
         lcd.clear();
-        lcd.print("Locked.");
+        lcd.print("Locked."); 
+        vTaskSuspend(ButtonTaskHandle);
+        vTaskSuspend(UITaskHandle);
         vTaskResume(RFIDTaskHandle);
       }
     }
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
 
@@ -247,12 +253,22 @@ bool isAuthorized() {
 }
 
 void RFIDTask(void *pvParameters) {
-  
-  for (;;) {
-    if (!rfid.PICC_IsNewCardPresent()) return;
+  // Initialized RFID RC522
+  rfid.PCD_Init();
+  ledcAttach(RFID_PIN, 1000, 11);
+  rfid.PCD_DumpVersionToSerial();
+  Serial.println("RFID Locked");
+  while (1) {
+    // Serial.println("inside RFIDTask");
+    if (!rfid.PICC_IsNewCardPresent()) {
+      // Serial.println("No new card is present");
+      continue;
+    }
 
     // Check if UID of the card present, if present, then sore it, else return false
-    if (!rfid.PICC_ReadCardSerial()) return;
+    // Serial.println("New card is present");
+
+    if (!rfid.PICC_ReadCardSerial()) continue;
 
     Serial.print("UID:");
     for (byte i = 0; i < rfid.uid.size; i++) {
@@ -264,21 +280,22 @@ void RFIDTask(void *pvParameters) {
 
     // Authorization
     if(isAuthorized()){
-      ledcWriteTone(BUZZER_PIN, 1000);            // 2 kHz beep
+      ledcWriteTone(RFID_PIN, 1000);            // 2 kHz beep
       vTaskDelay(pdMS_TO_TICKS(500));
-      ledcWriteTone(BUZZER_PIN, 0);               // stop tone
-      Serial.println("Unlocked");
-      vTaskResume(LCDTaskHandle);
+      ledcWriteTone(RFID_PIN, 0);               // stop tone
+      vTaskResume(UITaskHandle);
       vTaskResume(ButtonTaskHandle);
+      vTaskSuspend(NULL);
     }
 
     // Only able to do one print per tap
-    rfid.PICC_HaltA();
-    rfid.PCD_StopCrypto1();
+    // rfid.PICC_HaltA();
+    // rfid.PCD_StopCrypto1();
     
-    if(isAuthorized()) {
-      vTaskSuspend(NULL);
-    }
+    // if(isAuthorized()) {
+    //   vTaskSuspend(NULL);
+    // }
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
 
@@ -303,6 +320,8 @@ void setup() {
   uiSet = xQueueCreateSet(/*sum of lengths*/ 1 + 1);
   xQueueAddToSet(IMUQ, uiSet);
   xQueueAddToSet(disQ, uiSet);
+
+  SPI.begin(PIN_SCK, PIN_MISO, PIN_MOSI, PIN_SS);
 
   // TASK ON PIN 0 - radio-friendly and are not connected to peripheral
   xTaskCreatePinnedToCore(
@@ -332,7 +351,7 @@ void setup() {
     4096,
     nullptr,
     1,
-    nullptr,
+    &UITaskHandle,
     1
   );
 
@@ -347,36 +366,29 @@ void setup() {
   );
 
   xTaskCreatePinnedToCore(
-    LCDTask,
-    "LCD Task",
-    4096,
-    NULL,
-    1,
-    &LCDTaskHandle,
-    1
-  );
-
-  xTaskCreatePinnedToCore(
     RFIDTask,
     "RFID Task",
     4096,
     nullptr,
-    1,
+    2,
     &RFIDTaskHandle,
     1
   );
 
-  // xTaskCreatePinnedToCore(
-  //   accessTask,
-  //   "Access Task",
-  //   2048,
-  //   nullptr,
-  //   1,
-  //   &TaskHandle_Access,
-  //   1
-  // );
+  xTaskCreatePinnedToCore(
+    resetButtonTask,
+    "Reset button Task",
+    2048,
+    nullptr,
+    2,
+    nullptr,
+    1
+  );
 
   Serial.println("Scanner started");
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
 }
 
 void loop() {
