@@ -4,7 +4,7 @@
 // ---- REAL DEFINITIONS (exactly once) ----
 bool  hasAvg  = false;
 float rssiAvg = 0.0f;
-float txPower = -59.0f;   // tune later
+float txPower = -52.0f;   // tune later
 float nFactor = 2.5f;     // tune later
 
 void updateRssiAvg(int rssi) {
