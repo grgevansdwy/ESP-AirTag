@@ -6,3 +6,23 @@
 **/.DS_Store
 .DS_Store
 **/.DS_Store
+
+# ======================================================================
+# Doxygen output
+# ======================================================================
+
+# Ignore HTML docs
+html/
+docs/html/
+
+# Ignore LaTeX/PDF docs
+latex/
+docs/latex/
+
+# Ignore RTF and manpage outputs
+rtf/
+man/
+
+# Ignore Doxygen intermediate files
+*.tag
+*.doxytag
