@@ -1,0 +1,251 @@
+\doxysection{server/\+IMU\+\_\+\+REGISTER\+\_\+\+MAP.h File Reference}
+\hypertarget{_i_m_u___r_e_g_i_s_t_e_r___m_a_p_8h}{}\label{_i_m_u___r_e_g_i_s_t_e_r___m_a_p_8h}\index{server/IMU\_REGISTER\_MAP.h@{server/IMU\_REGISTER\_MAP.h}}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_ga5009d381ad610766ba841f811e50ee22}{WHO\+\_\+\+AM\+\_\+\+I\+\_\+\+MPU6500}}~0x70
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_ga1f3713ef719334aabf2d198255a14b90}{WHO\+\_\+\+AM\+\_\+\+I\+\_\+\+MPU9250}}~0x71
+\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Gyroscope Self-\/\+Test Registers}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaa2c719c7287dbe4862d03fdbaabb8ee1}{REG\+\_\+\+SELF\+\_\+\+TEST\+\_\+\+X\+\_\+\+GYRO}}~0x00
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga2dd2f98efa3ebed6d059310d698b0eb3}{REG\+\_\+\+SELF\+\_\+\+TEST\+\_\+\+Y\+\_\+\+GYRO}}~0x01
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga567e621d70610919f4bcbef4cd531316}{REG\+\_\+\+SELF\+\_\+\+TEST\+\_\+\+Z\+\_\+\+GYRO}}~0x02
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Accelerometer Self-\/\+Test Registers}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaefae05d5698bc123bd1871ce8e8e312a}{REG\+\_\+\+SELF\+\_\+\+TEST\+\_\+\+X\+\_\+\+ACCEL}}~0x0D
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga3662b453b9d596ab6b96c1e94fafb87a}{REG\+\_\+\+SELF\+\_\+\+TEST\+\_\+\+Y\+\_\+\+ACCEL}}~0x0E
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gac42cf4b9704a2b5d2016be51d85aa7ec}{REG\+\_\+\+SELF\+\_\+\+TEST\+\_\+\+Z\+\_\+\+ACCEL}}~0x0F
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Gyroscope Offsets}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gabdbcc57a2434a4cf27627e1c37f47a21}{REG\+\_\+\+XG\+\_\+\+OFFSET\+\_\+H}}~0x13
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaf00b280ac8fa9e256c33abfcdc23d365}{REG\+\_\+\+XG\+\_\+\+OFFSET\+\_\+L}}~0x14
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga8e3efba9504778cfe3e5eb687b33d409}{REG\+\_\+\+YG\+\_\+\+OFFSET\+\_\+H}}~0x15
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga0d3f6d22f8125e4b06605a9b951851be}{REG\+\_\+\+YG\+\_\+\+OFFSET\+\_\+L}}~0x16
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaca773d575da0975f26c2670def36efcb}{REG\+\_\+\+ZG\+\_\+\+OFFSET\+\_\+H}}~0x17
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaa5ffbe26aa435a8bfaa411eaa2113ba7}{REG\+\_\+\+ZG\+\_\+\+OFFSET\+\_\+L}}~0x18
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Sample Rate \& Config}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga9221fccfb00e441e3ac409d76e37bf20}{REG\+\_\+\+SMPLRT\+\_\+\+DIV}}~0x19
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga679325263fb326462f7410d3292171be}{REG\+\_\+\+CONFIG}}~0x1A
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaa80ccf68f0f11e35a8ff77039922b43d}{REG\+\_\+\+GYRO\+\_\+\+CONFIG}}~0x1B
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga7b8e959d8f7fc470648511d3917efee5}{REG\+\_\+\+ACCEL\+\_\+\+CONFIG}}~0x1C
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gab0e20dab488ecc5c572f18c625e6350a}{REG\+\_\+\+ACCEL\+\_\+\+CONFIG2}}~0x1D
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga17b7d03aea0cab03861a56b9b7e0d068}{REG\+\_\+\+LP\+\_\+\+ACCEL\+\_\+\+ODR}}~0x1E
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gac3128445c18af9e482901ff80cd0fb9a}{REG\+\_\+\+WOM\+\_\+\+THR}}~0x1F
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ FIFO \& I2C Master}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga02fddaf6d3323117fbbbc9a15a67d0f8}{REG\+\_\+\+FIFO\+\_\+\+EN}}~0x23
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gada0ddb486960446b71789e2528a2fe6c}{REG\+\_\+\+I2\+C\+\_\+\+MST\+\_\+\+CTRL}}~0x24
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaddd87340cce506e73372aaf235871307}{REG\+\_\+\+I2\+C\+\_\+\+SLV0\+\_\+\+ADDR}}~0x25
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga2ca9d94197c286c9ec62b51a3fdcc64a}{REG\+\_\+\+I2\+C\+\_\+\+SLV0\+\_\+\+REG}}~0x26
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga9a4a382267c521dec2a5f6648414b3e1}{REG\+\_\+\+I2\+C\+\_\+\+SLV0\+\_\+\+CTRL}}~0x27
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga97d5c086f2d8c2b6f50ad3da77968530}{REG\+\_\+\+I2\+C\+\_\+\+SLV1\+\_\+\+ADDR}}~0x28
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga2fe4b088ec196e82c02d5296a10c8cce}{REG\+\_\+\+I2\+C\+\_\+\+SLV1\+\_\+\+REG}}~0x29
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga206885d399be5f6eec30b28a6ce27db6}{REG\+\_\+\+I2\+C\+\_\+\+SLV1\+\_\+\+CTRL}}~0x2A
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga982e2d1b7a102ee8ea3253c36746c4fa}{REG\+\_\+\+I2\+C\+\_\+\+SLV2\+\_\+\+ADDR}}~0x2B
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga52573ba0677dc68c66237d3de416973b}{REG\+\_\+\+I2\+C\+\_\+\+SLV2\+\_\+\+REG}}~0x2C
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gadd56e1aed84c6c8a1b21a416f4b11930}{REG\+\_\+\+I2\+C\+\_\+\+SLV2\+\_\+\+CTRL}}~0x2D
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga8a7b3d32ae333365ca367cb92d357d7a}{REG\+\_\+\+I2\+C\+\_\+\+SLV3\+\_\+\+ADDR}}~0x2E
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gab46e75b4610f70922af5e46cf7b14277}{REG\+\_\+\+I2\+C\+\_\+\+SLV3\+\_\+\+REG}}~0x2F
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga94d20b81570a4ed0a12edc93949bd81a}{REG\+\_\+\+I2\+C\+\_\+\+SLV3\+\_\+\+CTRL}}~0x30
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaea58d9265275ebe117e4576bc34d5a19}{REG\+\_\+\+I2\+C\+\_\+\+SLV4\+\_\+\+ADDR}}~0x31
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga20373dfb53f09aa3fa5ed0dcaa9f4359}{REG\+\_\+\+I2\+C\+\_\+\+SLV4\+\_\+\+REG}}~0x32
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga87ad36e141b3ff810311d8e7698559eb}{REG\+\_\+\+I2\+C\+\_\+\+SLV4\+\_\+\+DO}}~0x33
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga135c49fdba65c359b262a0053753f124}{REG\+\_\+\+I2\+C\+\_\+\+SLV4\+\_\+\+CTRL}}~0x34
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga21602be55ea80d6fd20c8015b6df3686}{REG\+\_\+\+I2\+C\+\_\+\+SLV4\+\_\+\+DI}}~0x35
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga3e1a7ff5d6ce9e6b13f8e9d5008a1df1}{REG\+\_\+\+I2\+C\+\_\+\+MST\+\_\+\+STATUS}}~0x36
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Interrupts}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga26d31f2ecb2db6e0c183733b48f30b37}{REG\+\_\+\+INT\+\_\+\+PIN\+\_\+\+CFG}}~0x37
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga4c5c1b52ef4d960cba4eca99d406947a}{REG\+\_\+\+INT\+\_\+\+ENABLE}}~0x38
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga34aab8767fafeb628db9243bfa8f955a}{REG\+\_\+\+INT\+\_\+\+STATUS}}~0x3A
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Sensor Outputs}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaab8616dc1b72431e52f4b5370022933e}{REG\+\_\+\+ACCEL\+\_\+\+XOUT\+\_\+H}}~0x3B
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gac618d28360a5853d19a62fafbd745249}{REG\+\_\+\+ACCEL\+\_\+\+XOUT\+\_\+L}}~0x3C
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga1bae39fef1056fda0945495da4504b1b}{REG\+\_\+\+ACCEL\+\_\+\+YOUT\+\_\+H}}~0x3D
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gac1348c29121906eb702625a3db7f41df}{REG\+\_\+\+ACCEL\+\_\+\+YOUT\+\_\+L}}~0x3E
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaadd89903376eaff59c1c0fcfe7d8eb73}{REG\+\_\+\+ACCEL\+\_\+\+ZOUT\+\_\+H}}~0x3F
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gada19d2c53e0c1a4292c5a4e70800ac81}{REG\+\_\+\+ACCEL\+\_\+\+ZOUT\+\_\+L}}~0x40
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga521d96d4eadd598f6c97859b113052e0}{REG\+\_\+\+TEMP\+\_\+\+OUT\+\_\+H}}~0x41
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga9873e175a9d5f4cc446a6787f76eb91e}{REG\+\_\+\+TEMP\+\_\+\+OUT\+\_\+L}}~0x42
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga85d18c4a4fbf5c526712a67b7edcc488}{REG\+\_\+\+GYRO\+\_\+\+XOUT\+\_\+H}}~0x43
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga1ba4308a894c6bf007eec8f721cbba5e}{REG\+\_\+\+GYRO\+\_\+\+XOUT\+\_\+L}}~0x44
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga9cef680a9060d67377e29ccca851861e}{REG\+\_\+\+GYRO\+\_\+\+YOUT\+\_\+H}}~0x45
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga8ba04862aca7d462af1e65f946c98a9b}{REG\+\_\+\+GYRO\+\_\+\+YOUT\+\_\+L}}~0x46
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gae7e437044b3c621267594bc820863c4d}{REG\+\_\+\+GYRO\+\_\+\+ZOUT\+\_\+H}}~0x47
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga81b133de472320fc282d24366df283ee}{REG\+\_\+\+GYRO\+\_\+\+ZOUT\+\_\+L}}~0x48
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ External Sensor Data}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gad3547ae2b6698e5538abd36e957d6d17}{REG\+\_\+\+EXT\+\_\+\+SENS\+\_\+\+DATA\+\_\+00}}~0x49
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaeb762d02b5a369f3cf5d693ddc7cf851}{REG\+\_\+\+EXT\+\_\+\+SENS\+\_\+\+DATA\+\_\+23}}~0x60
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ I2C Data Out}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga132150579019ed02471924e0a704f2ed}{REG\+\_\+\+I2\+C\+\_\+\+SLV0\+\_\+\+DO}}~0x63
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga3bea3a797aae6467db9424a0f61fa844}{REG\+\_\+\+I2\+C\+\_\+\+SLV1\+\_\+\+DO}}~0x64
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gac7016ccb4f6fbfbab773038cc3728a4d}{REG\+\_\+\+I2\+C\+\_\+\+SLV2\+\_\+\+DO}}~0x65
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga495a03d99825b3f72071c842475579ac}{REG\+\_\+\+I2\+C\+\_\+\+SLV3\+\_\+\+DO}}~0x66
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Control \& Power Management}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga305d9c9425239de41cfaaed784af5279}{REG\+\_\+\+I2\+C\+\_\+\+MST\+\_\+\+DELAY\+\_\+\+CTRL}}~0x67
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga92be844c804f1b29314375922c08cc8b}{REG\+\_\+\+SIGNAL\+\_\+\+PATH\+\_\+\+RESET}}~0x68
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaf54de55b31199c2144303fe93169f7dc}{REG\+\_\+\+MOT\+\_\+\+DETECT\+\_\+\+CTRL}}~0x69
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga7cd9999e7d20bf5bbd262c3c38d36e31}{REG\+\_\+\+USER\+\_\+\+CTRL}}~0x6A
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaa22e489fc09f853f23e2586aac531ed6}{REG\+\_\+\+PWR\+\_\+\+MGMT\+\_\+1}}~0x6B
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga0ed2e6d84222bc33cd273eb036696bf1}{REG\+\_\+\+PWR\+\_\+\+MGMT\+\_\+2}}~0x6C
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ FIFO}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gaeac279be4e27a98317e3f1f9b1cdf510}{REG\+\_\+\+FIFO\+\_\+\+COUNTH}}~0x72
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga66fd68472d55091b2d36d31eef407c9f}{REG\+\_\+\+FIFO\+\_\+\+COUNTL}}~0x73
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga83e053b9defe1283b2b1f87dd6578f69}{REG\+\_\+\+FIFO\+\_\+\+R\+\_\+W}}~0x74
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Identification}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga73f4728dfb5c82afcea7bee729af205c}{REG\+\_\+\+WHO\+\_\+\+AM\+\_\+I}}~0x75
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Accelerometer Offsets}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga17aaf27c00a5362d5624105cb5741ba3}{REG\+\_\+\+XA\+\_\+\+OFFSET\+\_\+H}}~0x77
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga3d24a59bd0c9e50ba222a7bb2805bb96}{REG\+\_\+\+XA\+\_\+\+OFFSET\+\_\+L}}~0x78
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga684c0cec76c57ef250eae24175398b93}{REG\+\_\+\+YA\+\_\+\+OFFSET\+\_\+H}}~0x7A
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga1f6d5c1d1bfe31088381e60784baef7c}{REG\+\_\+\+YA\+\_\+\+OFFSET\+\_\+L}}~0x7B
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga81c1fda8d209fc9f0b64a024226cda97}{REG\+\_\+\+ZA\+\_\+\+OFFSET\+\_\+H}}~0x7D
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga61d408b0bae79d92813c6cc4cc5a4ab5}{REG\+\_\+\+ZA\+\_\+\+OFFSET\+\_\+L}}~0x7E
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Magnetometer Outputs}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga5083c13d080a0c89dafb42804ac5fece}{REG\+\_\+\+MAG\+\_\+\+XOUT\+\_\+H}}~0x03
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga9e68f9bf83548602992ca8fb9f982f4e}{REG\+\_\+\+MAG\+\_\+\+XOUT\+\_\+L}}~0x04
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gafe9fde98627aa42b2316d93c69f76dfc}{REG\+\_\+\+MAG\+\_\+\+YOUT\+\_\+H}}~0x05
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga3b68c4ca0676ead031e90abe558f9487}{REG\+\_\+\+MAG\+\_\+\+YOUT\+\_\+L}}~0x06
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_gab431c236a50da5aa99790da00157a2b1}{REG\+\_\+\+MAG\+\_\+\+ZOUT\+\_\+H}}~0x07
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___registers_ga11f163a08e9f23c71b5ece8c8969775f}{REG\+\_\+\+MAG\+\_\+\+ZOUT\+\_\+L}}~0x08
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Power Management 1 bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_ga7b66d3b6474ee8e7229a07beae661cda}{PWR\+\_\+\+DEVICE\+\_\+\+RESET}}~0x80
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_gabb01381ecbd799948340ad91c109a4f0}{PWR\+\_\+\+SLEEP}}~0x40
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_ga19502236928b72ffafe9eb721bd870fd}{PWR\+\_\+\+CYCLE}}~0x20
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_ga238fb52d89617ce713871da5a296eecf}{PWR\+\_\+\+CLKSEL\+\_\+\+INTERNAL}}~0x00
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_ga2e2cb3de5c96b4a7b2e67b7afaf91d15}{PWR\+\_\+\+CLKSEL\+\_\+\+PLL\+\_\+\+XGYRO}}~0x01
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_gacd1aef9c2f567a4163a3e954b817de71}{PWR\+\_\+\+CLKSEL\+\_\+\+PLL\+\_\+\+YGYRO}}~0x02
+\item 
+\#define \mbox{\hyperlink{group___m_p_u6500___common_gabe2e21fa92fa863bc35700dd3415d9e1}{PWR\+\_\+\+CLKSEL\+\_\+\+PLL\+\_\+\+ZGYRO}}~0x03
+\end{DoxyCompactItemize}
+\end{Indent}

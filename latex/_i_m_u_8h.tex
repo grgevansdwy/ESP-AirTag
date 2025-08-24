@@ -1,0 +1,228 @@
+\doxysection{server/\+IMU.h File Reference}
+\hypertarget{_i_m_u_8h}{}\label{_i_m_u_8h}\index{server/IMU.h@{server/IMU.h}}
+
+
+Header file for IMU initialization, calibration, and sensor data reading.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structimu}{imu}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{_i_m_u_8h_a8ad285aacfbaae225d989547906fac18}{imu\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize the IMU structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_i_m_u_8h_a65505b52457eec77d993c3194b67a37a}{imu\+\_\+read\+\_\+accel}} (float \texorpdfstring{$\ast$}{*}x\+Accel, float x\+Err, float \texorpdfstring{$\ast$}{*}y\+Accel, float y\+Err, float \texorpdfstring{$\ast$}{*}z\+Accel, float z\+Err)
+\begin{DoxyCompactList}\small\item\em Read accelerometer data from the IMU. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_i_m_u_8h_a474cb956f80410a50b4a1150b5ba5c66}{imu\+\_\+read\+\_\+gyro}} (float \texorpdfstring{$\ast$}{*}x\+Gyro, float x\+Err, float \texorpdfstring{$\ast$}{*}y\+Gyro, float y\+Err, float \texorpdfstring{$\ast$}{*}z\+Gyro, float z\+Err)
+\begin{DoxyCompactList}\small\item\em Read gyroscope data from the IMU. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_i_m_u_8h_acb3630d7f27d62cf94295c9c3dec6e9c}{calibrate\+Gyro}} (float \texorpdfstring{$\ast$}{*}x\+Err, float \texorpdfstring{$\ast$}{*}y\+Err, float \texorpdfstring{$\ast$}{*}z\+Err)
+\begin{DoxyCompactList}\small\item\em Calibrate the gyroscope by computing offsets. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_i_m_u_8h_a267ae3a18d8fdb8a9f95cf36ce8f4567}{calibrate\+Accel}} (float \texorpdfstring{$\ast$}{*}x\+Err, float \texorpdfstring{$\ast$}{*}y\+Err, float \texorpdfstring{$\ast$}{*}z\+Err)
+\begin{DoxyCompactList}\small\item\em Calibrate the accelerometer by computing offsets. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_i_m_u_8h_a36459c404ebb2a8e7ad3d7e623bb7a75}{imu\+\_\+i2c}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize I2C communication for the IMU. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file for IMU initialization, calibration, and sensor data reading. 
+
+This file provides function declarations for initializing the IMU structure, reading accelerometer and gyroscope data, and performing calibration routines. 
+
+\label{doc-func-members}
+\Hypertarget{_i_m_u_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_i_m_u_8h_a267ae3a18d8fdb8a9f95cf36ce8f4567}\index{IMU.h@{IMU.h}!calibrateAccel@{calibrateAccel}}
+\index{calibrateAccel@{calibrateAccel}!IMU.h@{IMU.h}}
+\doxysubsubsection{\texorpdfstring{calibrateAccel()}{calibrateAccel()}}
+{\footnotesize\ttfamily \label{_i_m_u_8h_a267ae3a18d8fdb8a9f95cf36ce8f4567} 
+void calibrate\+Accel (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{x\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{y\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{z\+Err}{}\end{DoxyParamCaption})}
+
+
+
+Calibrate the accelerometer by computing offsets. 
+
+Reads multiple samples from the accelerometer to estimate and compute the error offsets for each axis. These offsets can later be used for compensation during sensor readings.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Err} & Pointer to store the X-\/axis accelerometer offset. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Err} & Pointer to store the Y-\/axis accelerometer offset. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Err} & Pointer to store the Z-\/axis accelerometer offset.\\
+\hline
+\end{DoxyParams}
+Calibrate the accelerometer by computing offsets.
+
+Collects 1000 accelerometer readings and computes the average error for each axis, which can be subtracted in later readings.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Err} & Pointer to store average X-\/axis error. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Err} & Pointer to store average Y-\/axis error. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Err} & Pointer to store average Z-\/axis error. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{_i_m_u_8h_acb3630d7f27d62cf94295c9c3dec6e9c}\index{IMU.h@{IMU.h}!calibrateGyro@{calibrateGyro}}
+\index{calibrateGyro@{calibrateGyro}!IMU.h@{IMU.h}}
+\doxysubsubsection{\texorpdfstring{calibrateGyro()}{calibrateGyro()}}
+{\footnotesize\ttfamily \label{_i_m_u_8h_acb3630d7f27d62cf94295c9c3dec6e9c} 
+void calibrate\+Gyro (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{x\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{y\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{z\+Err}{}\end{DoxyParamCaption})}
+
+
+
+Calibrate the gyroscope by computing offsets. 
+
+Reads multiple samples from the gyroscope to estimate and compute the error offsets for each axis. These offsets can later be used for compensation during sensor readings.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Err} & Pointer to store the X-\/axis gyroscope offset. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Err} & Pointer to store the Y-\/axis gyroscope offset. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Err} & Pointer to store the Z-\/axis gyroscope offset.\\
+\hline
+\end{DoxyParams}
+Calibrate the gyroscope by computing offsets.
+
+Collects 1000 gyroscope readings and computes the average error for each axis, which can be subtracted in later readings.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Err} & Pointer to store average X-\/axis error. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Err} & Pointer to store average Y-\/axis error. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Err} & Pointer to store average Z-\/axis error. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{_i_m_u_8h_a36459c404ebb2a8e7ad3d7e623bb7a75}\index{IMU.h@{IMU.h}!imu\_i2c@{imu\_i2c}}
+\index{imu\_i2c@{imu\_i2c}!IMU.h@{IMU.h}}
+\doxysubsubsection{\texorpdfstring{imu\_i2c()}{imu\_i2c()}}
+{\footnotesize\ttfamily \label{_i_m_u_8h_a36459c404ebb2a8e7ad3d7e623bb7a75} 
+void imu\+\_\+i2c (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize I2C communication for the IMU. 
+
+Configures and sets up the I2C interface to enable communication with the IMU sensor.
+
+Initialize I2C communication for the IMU.
+
+Wakes up the IMU by writing to the power management register. This must be called before reading accelerometer or gyroscope data. \Hypertarget{_i_m_u_8h_a8ad285aacfbaae225d989547906fac18}\index{IMU.h@{IMU.h}!imu\_init@{imu\_init}}
+\index{imu\_init@{imu\_init}!IMU.h@{IMU.h}}
+\doxysubsubsection{\texorpdfstring{imu\_init()}{imu\_init()}}
+{\footnotesize\ttfamily \label{_i_m_u_8h_a8ad285aacfbaae225d989547906fac18} 
+struct \mbox{\hyperlink{structimu}{imu}} \texorpdfstring{$\ast$}{*} imu\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the IMU structure. 
+
+Allocates memory for the IMU structure and initializes all sensor values to zero.
+
+\begin{DoxyReturn}{Returns}
+Pointer to the allocated and initialized IMU structure.
+\end{DoxyReturn}
+Initialize the IMU structure.
+
+Allocates memory for an IMU structure and sets all accelerometer and gyroscope values to zero.
+
+\begin{DoxyReturn}{Returns}
+Pointer to the initialized imu structure. 
+\end{DoxyReturn}
+\Hypertarget{_i_m_u_8h_a65505b52457eec77d993c3194b67a37a}\index{IMU.h@{IMU.h}!imu\_read\_accel@{imu\_read\_accel}}
+\index{imu\_read\_accel@{imu\_read\_accel}!IMU.h@{IMU.h}}
+\doxysubsubsection{\texorpdfstring{imu\_read\_accel()}{imu\_read\_accel()}}
+{\footnotesize\ttfamily \label{_i_m_u_8h_a65505b52457eec77d993c3194b67a37a} 
+void imu\+\_\+read\+\_\+accel (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{x\+Accel}{, }\item[{float}]{x\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{y\+Accel}{, }\item[{float}]{y\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{z\+Accel}{, }\item[{float}]{z\+Err}{}\end{DoxyParamCaption})}
+
+
+
+Read accelerometer data from the IMU. 
+
+Reads raw accelerometer values from the IMU over I2C, applies scaling, and compensates for calibration error offsets.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Accel} & Pointer to store the X-\/axis acceleration value. \\
+\hline
+\mbox{\texttt{in}}  & {\em x\+Err} & Error offset for X-\/axis acceleration. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Accel} & Pointer to store the Y-\/axis acceleration value. \\
+\hline
+\mbox{\texttt{in}}  & {\em y\+Err} & Error offset for Y-\/axis acceleration. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Accel} & Pointer to store the Z-\/axis acceleration value. \\
+\hline
+\mbox{\texttt{in}}  & {\em z\+Err} & Error offset for Z-\/axis acceleration.\\
+\hline
+\end{DoxyParams}
+Read accelerometer data from the IMU.
+
+Reads raw accelerometer values via I2C, converts them into g-\/units, and applies error offsets.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Accel} & Pointer to store X-\/axis acceleration. \\
+\hline
+\mbox{\texttt{in}}  & {\em x\+Err} & X-\/axis calibration error. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Accel} & Pointer to store Y-\/axis acceleration. \\
+\hline
+\mbox{\texttt{in}}  & {\em y\+Err} & Y-\/axis calibration error. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Accel} & Pointer to store Z-\/axis acceleration. \\
+\hline
+\mbox{\texttt{in}}  & {\em z\+Err} & Z-\/axis calibration error. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{_i_m_u_8h_a474cb956f80410a50b4a1150b5ba5c66}\index{IMU.h@{IMU.h}!imu\_read\_gyro@{imu\_read\_gyro}}
+\index{imu\_read\_gyro@{imu\_read\_gyro}!IMU.h@{IMU.h}}
+\doxysubsubsection{\texorpdfstring{imu\_read\_gyro()}{imu\_read\_gyro()}}
+{\footnotesize\ttfamily \label{_i_m_u_8h_a474cb956f80410a50b4a1150b5ba5c66} 
+void imu\+\_\+read\+\_\+gyro (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{x\+Gyro}{, }\item[{float}]{x\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{y\+Gyro}{, }\item[{float}]{y\+Err}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{z\+Gyro}{, }\item[{float}]{z\+Err}{}\end{DoxyParamCaption})}
+
+
+
+Read gyroscope data from the IMU. 
+
+Reads raw gyroscope values from the IMU over I2C, applies scaling, and compensates for calibration error offsets.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Gyro} & Pointer to store the X-\/axis gyroscope value. \\
+\hline
+\mbox{\texttt{in}}  & {\em x\+Err} & Error offset for X-\/axis gyroscope. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Gyro} & Pointer to store the Y-\/axis gyroscope value. \\
+\hline
+\mbox{\texttt{in}}  & {\em y\+Err} & Error offset for Y-\/axis gyroscope. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Gyro} & Pointer to store the Z-\/axis gyroscope value. \\
+\hline
+\mbox{\texttt{in}}  & {\em z\+Err} & Error offset for Z-\/axis gyroscope.\\
+\hline
+\end{DoxyParams}
+Read gyroscope data from the IMU.
+
+Reads raw gyroscope values via I2C, converts them into degrees/sec, and applies error offsets.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{out}}  & {\em x\+Gyro} & Pointer to store X-\/axis gyroscope value. \\
+\hline
+\mbox{\texttt{in}}  & {\em x\+Err} & X-\/axis calibration error. \\
+\hline
+\mbox{\texttt{out}}  & {\em y\+Gyro} & Pointer to store Y-\/axis gyroscope value. \\
+\hline
+\mbox{\texttt{in}}  & {\em y\+Err} & Y-\/axis calibration error. \\
+\hline
+\mbox{\texttt{out}}  & {\em z\+Gyro} & Pointer to store Z-\/axis gyroscope value. \\
+\hline
+\mbox{\texttt{in}}  & {\em z\+Err} & Z-\/axis calibration error. \\
+\hline
+\end{DoxyParams}

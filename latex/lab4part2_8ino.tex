@@ -1,0 +1,197 @@
+\doxysection{/\+Users/georgeevansdaenuwy/\+Downloads/\+Lab4\+Files/lab4part2/lab4part2.ino File Reference}
+\hypertarget{lab4part2_8ino}{}\label{lab4part2_8ino}\index{/Users/georgeevansdaenuwy/Downloads/Lab4Files/lab4part2/lab4part2.ino@{/Users/georgeevansdaenuwy/Downloads/Lab4Files/lab4part2/lab4part2.ino}}
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/task.\+h"{}}\newline
+{\ttfamily \#include "{}Liquid\+Crystal\+\_\+\+I2\+C.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lab4part2_8ino_a7b9f8130aa86fd9296d46ad818e1d2da}{LDRPIN}}~4
+\item 
+\#define \mbox{\hyperlink{lab4part2_8ino_a2b3671e090b0831bfba7d12cfcf2d481}{LEDPIN}}~5
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{lab4part2_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}{lcd}} (0x27, 16, 2)
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_a760f2a01a9004b89f6f6374b73dcbf8b}{light\+Detector\+Task}} ()
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_a696f1227af84fad2f0fd60ab174051c9}{lcd\+Task}} ()
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_ad358998e14019f8b50e757bb3bcc4a40}{anomaly\+Alarm}} ()
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_ae3a5dc2b86dad1534ed96f29c7e4b6c7}{prime\+Calculation\+Task}} ()
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_ab8e13e31e625fec5c646fd7afd4b8c27}{light\+Detector\+Task}} (void \texorpdfstring{$\ast$}{*}arg)
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_abc0a5e2b9db7d26f855df2e334fd4bda}{lcd\+Task}} (void \texorpdfstring{$\ast$}{*}arg)
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_a55a4d549dabe6d7bccce5bf223bdbb41}{anomaly\+Alarm}} (void \texorpdfstring{$\ast$}{*}arg)
+\item 
+void \mbox{\hyperlink{lab4part2_8ino_a64c67870c768d4e93f85219a5e8eb3b1}{prime\+Calculation\+Task}} (void \texorpdfstring{$\ast$}{*}arg)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{lab4part2_8ino_acb559820d9ca11295b4500f179ef6392}{i}} = 0
+\item 
+int \mbox{\hyperlink{lab4part2_8ino_a5138faef46ab3250e04fb0764ecb8229}{buffer}} \mbox{[}5\mbox{]} = \{0\}
+\item 
+float \mbox{\hyperlink{lab4part2_8ino_aeeafe7e9eebbd2a45ce4fa2ae0d96c51}{sum}} = 0
+\item 
+float \mbox{\hyperlink{lab4part2_8ino_ac031a0922fc33110fb91fd4d76ee0273}{avg}}
+\item 
+unsigned int \mbox{\hyperlink{lab4part2_8ino_a2a5a27690c40c531d0a8385dc4f66a95}{value}}
+\item 
+bool \mbox{\hyperlink{lab4part2_8ino_a665fb813bd62a50b845c2cdb3f80d990}{is\+Prime}}
+\item 
+int \mbox{\hyperlink{lab4part2_8ino_a86cf672daa4e0ad11ad10efc894d19c8}{num}} = 2
+\item 
+Semaphore\+Handle\+\_\+t \mbox{\hyperlink{lab4part2_8ino_a9bd367f68ea1238f3311462683bd5968}{x\+Binary\+Semaphore}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-define-members}
+\Hypertarget{lab4part2_8ino_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{lab4part2_8ino_a7b9f8130aa86fd9296d46ad818e1d2da}\index{lab4part2.ino@{lab4part2.ino}!LDRPIN@{LDRPIN}}
+\index{LDRPIN@{LDRPIN}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{LDRPIN}{LDRPIN}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a7b9f8130aa86fd9296d46ad818e1d2da} 
+\#define LDRPIN~4}
+
+\Hypertarget{lab4part2_8ino_a2b3671e090b0831bfba7d12cfcf2d481}\index{lab4part2.ino@{lab4part2.ino}!LEDPIN@{LEDPIN}}
+\index{LEDPIN@{LEDPIN}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{LEDPIN}{LEDPIN}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a2b3671e090b0831bfba7d12cfcf2d481} 
+\#define LEDPIN~5}
+
+
+
+\label{doc-func-members}
+\Hypertarget{lab4part2_8ino_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{lab4part2_8ino_ad358998e14019f8b50e757bb3bcc4a40}\index{lab4part2.ino@{lab4part2.ino}!anomalyAlarm@{anomalyAlarm}}
+\index{anomalyAlarm@{anomalyAlarm}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{anomalyAlarm()}{anomalyAlarm()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_ad358998e14019f8b50e757bb3bcc4a40} 
+void anomaly\+Alarm (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_a55a4d549dabe6d7bccce5bf223bdbb41}\index{lab4part2.ino@{lab4part2.ino}!anomalyAlarm@{anomalyAlarm}}
+\index{anomalyAlarm@{anomalyAlarm}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{anomalyAlarm()}{anomalyAlarm()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a55a4d549dabe6d7bccce5bf223bdbb41} 
+void anomaly\+Alarm (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}\index{lab4part2.ino@{lab4part2.ino}!lcd@{lcd}}
+\index{lcd@{lcd}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{lcd()}{lcd()}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d} 
+Liquid\+Crystal\+\_\+\+I2C lcd (\begin{DoxyParamCaption}\item[{0x27}]{}{, }\item[{16}]{}{, }\item[{2}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_a696f1227af84fad2f0fd60ab174051c9}\index{lab4part2.ino@{lab4part2.ino}!lcdTask@{lcdTask}}
+\index{lcdTask@{lcdTask}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{lcdTask()}{lcdTask()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a696f1227af84fad2f0fd60ab174051c9} 
+void lcd\+Task (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_abc0a5e2b9db7d26f855df2e334fd4bda}\index{lab4part2.ino@{lab4part2.ino}!lcdTask@{lcdTask}}
+\index{lcdTask@{lcdTask}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{lcdTask()}{lcdTask()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_abc0a5e2b9db7d26f855df2e334fd4bda} 
+void lcd\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_a760f2a01a9004b89f6f6374b73dcbf8b}\index{lab4part2.ino@{lab4part2.ino}!lightDetectorTask@{lightDetectorTask}}
+\index{lightDetectorTask@{lightDetectorTask}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{lightDetectorTask()}{lightDetectorTask()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a760f2a01a9004b89f6f6374b73dcbf8b} 
+void light\+Detector\+Task (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_ab8e13e31e625fec5c646fd7afd4b8c27}\index{lab4part2.ino@{lab4part2.ino}!lightDetectorTask@{lightDetectorTask}}
+\index{lightDetectorTask@{lightDetectorTask}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{lightDetectorTask()}{lightDetectorTask()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_ab8e13e31e625fec5c646fd7afd4b8c27} 
+void light\+Detector\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_afe461d27b9c48d5921c00d521181f12f}\index{lab4part2.ino@{lab4part2.ino}!loop@{loop}}
+\index{loop@{loop}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_afe461d27b9c48d5921c00d521181f12f} 
+void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_ae3a5dc2b86dad1534ed96f29c7e4b6c7}\index{lab4part2.ino@{lab4part2.ino}!primeCalculationTask@{primeCalculationTask}}
+\index{primeCalculationTask@{primeCalculationTask}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{primeCalculationTask()}{primeCalculationTask()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_ae3a5dc2b86dad1534ed96f29c7e4b6c7} 
+void prime\+Calculation\+Task (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_a64c67870c768d4e93f85219a5e8eb3b1}\index{lab4part2.ino@{lab4part2.ino}!primeCalculationTask@{primeCalculationTask}}
+\index{primeCalculationTask@{primeCalculationTask}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{primeCalculationTask()}{primeCalculationTask()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a64c67870c768d4e93f85219a5e8eb3b1} 
+void prime\+Calculation\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+\Hypertarget{lab4part2_8ino_a4fc01d736fe50cf5b977f755b675f11d}\index{lab4part2.ino@{lab4part2.ino}!setup@{setup}}
+\index{setup@{setup}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-var-members}
+\Hypertarget{lab4part2_8ino_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{lab4part2_8ino_ac031a0922fc33110fb91fd4d76ee0273}\index{lab4part2.ino@{lab4part2.ino}!avg@{avg}}
+\index{avg@{avg}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{avg}{avg}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_ac031a0922fc33110fb91fd4d76ee0273} 
+float avg}
+
+\Hypertarget{lab4part2_8ino_a5138faef46ab3250e04fb0764ecb8229}\index{lab4part2.ino@{lab4part2.ino}!buffer@{buffer}}
+\index{buffer@{buffer}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a5138faef46ab3250e04fb0764ecb8229} 
+int buffer\mbox{[}5\mbox{]} = \{0\}}
+
+\Hypertarget{lab4part2_8ino_acb559820d9ca11295b4500f179ef6392}\index{lab4part2.ino@{lab4part2.ino}!i@{i}}
+\index{i@{i}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{i}{i}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_acb559820d9ca11295b4500f179ef6392} 
+int i = 0}
+
+\Hypertarget{lab4part2_8ino_a665fb813bd62a50b845c2cdb3f80d990}\index{lab4part2.ino@{lab4part2.ino}!isPrime@{isPrime}}
+\index{isPrime@{isPrime}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{isPrime}{isPrime}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a665fb813bd62a50b845c2cdb3f80d990} 
+bool is\+Prime}
+
+\Hypertarget{lab4part2_8ino_a86cf672daa4e0ad11ad10efc894d19c8}\index{lab4part2.ino@{lab4part2.ino}!num@{num}}
+\index{num@{num}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{num}{num}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a86cf672daa4e0ad11ad10efc894d19c8} 
+int num = 2}
+
+\Hypertarget{lab4part2_8ino_aeeafe7e9eebbd2a45ce4fa2ae0d96c51}\index{lab4part2.ino@{lab4part2.ino}!sum@{sum}}
+\index{sum@{sum}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{sum}{sum}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_aeeafe7e9eebbd2a45ce4fa2ae0d96c51} 
+float sum = 0}
+
+\Hypertarget{lab4part2_8ino_a2a5a27690c40c531d0a8385dc4f66a95}\index{lab4part2.ino@{lab4part2.ino}!value@{value}}
+\index{value@{value}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a2a5a27690c40c531d0a8385dc4f66a95} 
+unsigned int value}
+
+\Hypertarget{lab4part2_8ino_a9bd367f68ea1238f3311462683bd5968}\index{lab4part2.ino@{lab4part2.ino}!xBinarySemaphore@{xBinarySemaphore}}
+\index{xBinarySemaphore@{xBinarySemaphore}!lab4part2.ino@{lab4part2.ino}}
+\doxysubsubsection{\texorpdfstring{xBinarySemaphore}{xBinarySemaphore}}
+{\footnotesize\ttfamily \label{lab4part2_8ino_a9bd367f68ea1238f3311462683bd5968} 
+Semaphore\+Handle\+\_\+t x\+Binary\+Semaphore}
+

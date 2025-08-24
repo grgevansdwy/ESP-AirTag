@@ -1,0 +1,79 @@
+\chapter{ESP-\/\+Air\+Tag }
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{ESP-\/AirTag@{ESP-\/AirTag}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+
+
+An {\bfseries{ESP32-\/\+S3 based Air\+Tag-\/like tracking system}} featuring {\bfseries{BLE communication, Free\+RTOS task management, IMU-\/based movement detection, and RFID authentication}}. The system enables real-\/time distance estimation, secure access control, and lost-\/mode alerts via a buzzer.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{📌 Features}{📌 Features}}\label{md__r_e_a_d_m_e_autotoc_md2}
+
+\begin{DoxyItemize}
+\item {\bfseries{BLE Communication}}
+\begin{DoxyItemize}
+\item Transmitter (Air\+Tag) advertises data including distance and movement status
+\item Receiver (Tracker) scans, connects, and sends lost mode commands
+\end{DoxyItemize}
+\item {\bfseries{RFID Authentication}}
+\begin{DoxyItemize}
+\item Unlocks access to distance data
+\item Hardware button to re-\/lock RFID
+\end{DoxyItemize}
+\item {\bfseries{Movement Detection}}
+\begin{DoxyItemize}
+\item IMU on Air\+Tag detects motion and sends updates to Tracker
+\end{DoxyItemize}
+\item {\bfseries{Distance Estimation}}
+\begin{DoxyItemize}
+\item Using RSSI (Received Signal Strength Indicator) or Time-\/of-\/\+Flight methods
+\end{DoxyItemize}
+\item {\bfseries{Lost Mode}}
+\begin{DoxyItemize}
+\item Trigger buzzer on Air\+Tag remotely from Tracker
+\end{DoxyItemize}
+\item {\bfseries{LCD User Interface}}
+\begin{DoxyItemize}
+\item 1st line\+: Distance
+\item 2nd line\+: Motion status or "{}\+Access Denied"{}
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysection{\texorpdfstring{🛠 Hardware Requirements}{🛠 Hardware Requirements}}\label{md__r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyItemize}
+\item {\bfseries{ESP32-\/\+S3}} (2 units\+: transmitter \& receiver)
+\item {\bfseries{RFID module}} (e.\+g., MFRC522)
+\item {\bfseries{IMU sensor}} (e.\+g., MPU6050, MPU9250)
+\item {\bfseries{I2C LCD display}}
+\item {\bfseries{Buzzer}}
+\item Push button for RFID re-\/lock
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysection{\texorpdfstring{⚙️ Software Requirements}{⚙️ Software Requirements}}\label{md__r_e_a_d_m_e_autotoc_md6}
+
+\begin{DoxyItemize}
+\item {\bfseries{Arduino IDE}}
+\item {\bfseries{ESP-\/\+IDF}} or Arduino core for ESP32
+\item {\bfseries{Free\+RTOS}}
+\item BLE libraries ({\ttfamily ESP32 BLE Arduino})
+\item RFID library for chosen module
+\item IMU library for chosen sensor
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysection{\texorpdfstring{🚀 How It Works}{🚀 How It Works}}\label{md__r_e_a_d_m_e_autotoc_md8}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Authentication}} — RFID card unlocks access to distance data. ~\newline
+
+\item {\bfseries{Scanning}} — Tracker connects to Air\+Tag via BLE to read IMU status \& RSSI. ~\newline
+
+\item {\bfseries{Display}} — Distance and motion status shown on LCD. ~\newline
+
+\item {\bfseries{Lost Mode}} — Tracker sends command to Air\+Tag to trigger buzzer. ~\newline
+
+\item {\bfseries{Re-\/lock}} — Button resets RFID lock. 
+\end{DoxyEnumerate}

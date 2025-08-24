@@ -1,0 +1,286 @@
+\doxysection{server/server.ino File Reference}
+\hypertarget{server_8ino}{}\label{server_8ino}\index{server/server.ino@{server/server.ino}}
+
+
+ESP32 BLE Server with IMU integration and buzzer control.  
+
+
+{\ttfamily \#include $<$BLEDevice.\+h$>$}\newline
+{\ttfamily \#include $<$BLEServer.\+h$>$}\newline
+{\ttfamily \#include $<$BLEUtils.\+h$>$}\newline
+{\ttfamily \#include $<$BLE2902.\+h$>$}\newline
+{\ttfamily \#include "{}IMU.\+h"{}}\newline
+{\ttfamily \#include "{}IMU\+\_\+\+STRUCT.\+h"{}}\newline
+{\ttfamily \#include "{}IMU\+\_\+\+REGISTER\+\_\+\+MAP.\+h"{}}\newline
+{\ttfamily \#include $<$Wire.\+h$>$}\newline
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/task.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_server_callbacks}{Server\+Callbacks}}
+\begin{DoxyCompactList}\small\item\em Handles BLE server connect/disconnect events. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_button_callbacks}{Button\+Callbacks}}
+\begin{DoxyCompactList}\small\item\em Handles write events to the Button characteristic. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{server_8ino_ab61d0981ed42df9e18211b273d22cfcd}{BUZZER\+\_\+\+PIN}}~2
+\begin{DoxyCompactList}\small\item\em GPIO pin for buzzer output. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{server_8ino_a445125ee8c34695376c85f10b38844d6}{SERVICE\+\_\+\+UUID}}~"{}275dc6e0-\/dff5-\/4b56-\/9af0-\/584a5768a02a"{}
+\begin{DoxyCompactList}\small\item\em BLE Service UUID. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{server_8ino_afe874f71a08a3f462cb89a768e2a43e2}{BUTTON\+\_\+\+CHAR\+\_\+\+UUID}}~"{}b51bd845-\/2910-\/4f84-\/b062-\/d297ed286b1f"{}
+\begin{DoxyCompactList}\small\item\em Button characteristic UUID. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{server_8ino_ad5ef132e7e580fbe574f6cf357becb2e}{IMU\+\_\+\+CHAR\+\_\+\+UUID}}~"{}0679c389-\/0d92-\/4604-\/aac4-\/664c43a51934"{}
+\begin{DoxyCompactList}\small\item\em IMU characteristic UUID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{server_8ino_a10aa4f5ee429d8cb8303ced873d4cf91}{IMUTask}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task that reads IMU data, processes orientation, and detects movement. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{server_8ino_a97178629c18a6d227ccaf5167384d1dc}{Button\+Relay\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task that relays button press signals from BLE writes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{server_8ino_a3b1a2288bd0695d39cb3859147661dd7}{Buzzer\+Set\+Task}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Task that toggles buzzer on/off when button events occur. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{server_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em Arduino setup function. Initializes Serial, I2C, BLE, creates GATT server and tasks. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{server_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Arduino loop function (unused, tasks handle logic). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+BLECharacteristic \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{server_8ino_a88d99ecf4a91fe86efb2fe7be87c0e08}{button\+Char}}
+\begin{DoxyCompactList}\small\item\em Pointer to Button characteristic. \end{DoxyCompactList}\item 
+BLECharacteristic \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{server_8ino_a9273c661647db23377faa8ccb10fc21a}{imu\+Char}}
+\begin{DoxyCompactList}\small\item\em Pointer to IMU characteristic. \end{DoxyCompactList}\item 
+BLEServer \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{server_8ino_a4c702b816cf82ea6518921edab262bd9}{server}}
+\begin{DoxyCompactList}\small\item\em Pointer to BLE server object. \end{DoxyCompactList}\item 
+volatile bool \mbox{\hyperlink{server_8ino_a5affc02c6814932fa2696bac53bc2598}{device\+Connected}} = false
+\begin{DoxyCompactList}\small\item\em Flag indicating central connection status. \end{DoxyCompactList}\item 
+volatile bool \mbox{\hyperlink{server_8ino_a76126af82ae104e3b7f9d20d5928f5dd}{ble\+Message\+Received}} = false
+\begin{DoxyCompactList}\small\item\em Flag indicating BLE message received. \end{DoxyCompactList}\item 
+Semaphore\+Handle\+\_\+t \mbox{\hyperlink{server_8ino_af4f8d8fb73988021e53cc1947864e12b}{x\+Button\+Signal\+Semaphore}}
+\begin{DoxyCompactList}\small\item\em Semaphore used to signal button events between tasks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+ESP32 BLE Server with IMU integration and buzzer control. 
+
+Implements a BLE GATT server with two characteristics\+:
+\begin{DoxyItemize}
+\item Button characteristic (read/write)
+\item IMU characteristic (notify for movement detection)
+\end{DoxyItemize}
+
+The system uses Free\+RTOS tasks\+:
+\begin{DoxyItemize}
+\item IMUTask\+: Reads IMU sensor data and detects movement
+\item Button\+Relay\+Task\+: Handles BLE write events and signals via semaphore
+\item Buzzer\+Set\+Task\+: Toggles a buzzer based on BLE commands
+\end{DoxyItemize}
+
+Includes orientation computation, linear acceleration processing, and movement detection with a smoothing filter.
+
+\begin{DoxyNote}{Note}
+Requires BLE libraries and Free\+RTOS on ESP32. 
+\end{DoxyNote}
+\begin{DoxyAuthor}{Author}
+George Evans Daenuwy \& Rasya Fawwaz 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/08-\/21 
+\end{DoxyDate}
+
+
+\label{doc-define-members}
+\Hypertarget{server_8ino_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{server_8ino_afe874f71a08a3f462cb89a768e2a43e2}\index{server.ino@{server.ino}!BUTTON\_CHAR\_UUID@{BUTTON\_CHAR\_UUID}}
+\index{BUTTON\_CHAR\_UUID@{BUTTON\_CHAR\_UUID}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_CHAR\_UUID}{BUTTON\_CHAR\_UUID}}
+{\footnotesize\ttfamily \label{server_8ino_afe874f71a08a3f462cb89a768e2a43e2} 
+\#define BUTTON\+\_\+\+CHAR\+\_\+\+UUID~"{}b51bd845-\/2910-\/4f84-\/b062-\/d297ed286b1f"{}}
+
+
+
+Button characteristic UUID. 
+
+\Hypertarget{server_8ino_ab61d0981ed42df9e18211b273d22cfcd}\index{server.ino@{server.ino}!BUZZER\_PIN@{BUZZER\_PIN}}
+\index{BUZZER\_PIN@{BUZZER\_PIN}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{BUZZER\_PIN}{BUZZER\_PIN}}
+{\footnotesize\ttfamily \label{server_8ino_ab61d0981ed42df9e18211b273d22cfcd} 
+\#define BUZZER\+\_\+\+PIN~2}
+
+
+
+GPIO pin for buzzer output. 
+
+\texorpdfstring{$<$}{<} Initializes BLE general functionality \texorpdfstring{$<$}{<} Provides BLE server (peripheral role) functionality \texorpdfstring{$<$}{<} BLE helper utilities such as UUID handling \texorpdfstring{$<$}{<} Descriptor class for Client Characteristic Configuration Descriptor (CCCD) \texorpdfstring{$<$}{<} Custom IMU driver \texorpdfstring{$<$}{<} IMU data structure definition \texorpdfstring{$<$}{<} IMU register map \texorpdfstring{$<$}{<} I2C communication library \Hypertarget{server_8ino_ad5ef132e7e580fbe574f6cf357becb2e}\index{server.ino@{server.ino}!IMU\_CHAR\_UUID@{IMU\_CHAR\_UUID}}
+\index{IMU\_CHAR\_UUID@{IMU\_CHAR\_UUID}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{IMU\_CHAR\_UUID}{IMU\_CHAR\_UUID}}
+{\footnotesize\ttfamily \label{server_8ino_ad5ef132e7e580fbe574f6cf357becb2e} 
+\#define IMU\+\_\+\+CHAR\+\_\+\+UUID~"{}0679c389-\/0d92-\/4604-\/aac4-\/664c43a51934"{}}
+
+
+
+IMU characteristic UUID. 
+
+\Hypertarget{server_8ino_a445125ee8c34695376c85f10b38844d6}\index{server.ino@{server.ino}!SERVICE\_UUID@{SERVICE\_UUID}}
+\index{SERVICE\_UUID@{SERVICE\_UUID}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{SERVICE\_UUID}{SERVICE\_UUID}}
+{\footnotesize\ttfamily \label{server_8ino_a445125ee8c34695376c85f10b38844d6} 
+\#define SERVICE\+\_\+\+UUID~"{}275dc6e0-\/dff5-\/4b56-\/9af0-\/584a5768a02a"{}}
+
+
+
+BLE Service UUID. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{server_8ino_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{server_8ino_a97178629c18a6d227ccaf5167384d1dc}\index{server.ino@{server.ino}!ButtonRelayTask@{ButtonRelayTask}}
+\index{ButtonRelayTask@{ButtonRelayTask}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{ButtonRelayTask()}{ButtonRelayTask()}}
+{\footnotesize\ttfamily \label{server_8ino_a97178629c18a6d227ccaf5167384d1dc} 
+void Button\+Relay\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task that relays button press signals from BLE writes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Free\+RTOS task parameter (unused). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{server_8ino_a3b1a2288bd0695d39cb3859147661dd7}\index{server.ino@{server.ino}!BuzzerSetTask@{BuzzerSetTask}}
+\index{BuzzerSetTask@{BuzzerSetTask}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{BuzzerSetTask()}{BuzzerSetTask()}}
+{\footnotesize\ttfamily \label{server_8ino_a3b1a2288bd0695d39cb3859147661dd7} 
+void Buzzer\+Set\+Task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task that toggles buzzer on/off when button events occur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Free\+RTOS task parameter (unused). \\
+\hline
+\end{DoxyParams}
+\texorpdfstring{$<$}{<} Turn buzzer on
+
+\texorpdfstring{$<$}{<} Turn buzzer off\Hypertarget{server_8ino_a10aa4f5ee429d8cb8303ced873d4cf91}\index{server.ino@{server.ino}!IMUTask@{IMUTask}}
+\index{IMUTask@{IMUTask}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{IMUTask()}{IMUTask()}}
+{\footnotesize\ttfamily \label{server_8ino_a10aa4f5ee429d8cb8303ced873d4cf91} 
+void IMUTask (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Task that reads IMU data, processes orientation, and detects movement. 
+
+
+\begin{DoxyItemize}
+\item Reads accelerometer and gyroscope data
+\item Applies complementary filter for orientation
+\item Removes gravitational bias
+\item Computes linear acceleration magnitude
+\item Applies SMA filter to detect sustained movement
+\item Notifies central via BLE when movement starts/stops
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Free\+RTOS task parameter (unused). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{server_8ino_afe461d27b9c48d5921c00d521181f12f}\index{server.ino@{server.ino}!loop@{loop}}
+\index{loop@{loop}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily \label{server_8ino_afe461d27b9c48d5921c00d521181f12f} 
+void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Arduino loop function (unused, tasks handle logic). 
+
+\Hypertarget{server_8ino_a4fc01d736fe50cf5b977f755b675f11d}\index{server.ino@{server.ino}!setup@{setup}}
+\index{setup@{setup}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{server_8ino_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Arduino setup function. Initializes Serial, I2C, BLE, creates GATT server and tasks. 
+
+\texorpdfstring{$<$}{<} Configure buzzer PWM
+
+\texorpdfstring{$<$}{<} Increase MTU size for better throughput
+
+\label{doc-var-members}
+\Hypertarget{server_8ino_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{server_8ino_a76126af82ae104e3b7f9d20d5928f5dd}\index{server.ino@{server.ino}!bleMessageReceived@{bleMessageReceived}}
+\index{bleMessageReceived@{bleMessageReceived}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{bleMessageReceived}{bleMessageReceived}}
+{\footnotesize\ttfamily \label{server_8ino_a76126af82ae104e3b7f9d20d5928f5dd} 
+volatile bool ble\+Message\+Received = false}
+
+
+
+Flag indicating BLE message received. 
+
+\Hypertarget{server_8ino_a88d99ecf4a91fe86efb2fe7be87c0e08}\index{server.ino@{server.ino}!buttonChar@{buttonChar}}
+\index{buttonChar@{buttonChar}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{buttonChar}{buttonChar}}
+{\footnotesize\ttfamily \label{server_8ino_a88d99ecf4a91fe86efb2fe7be87c0e08} 
+BLECharacteristic\texorpdfstring{$\ast$}{*} button\+Char}
+
+
+
+Pointer to Button characteristic. 
+
+\Hypertarget{server_8ino_a5affc02c6814932fa2696bac53bc2598}\index{server.ino@{server.ino}!deviceConnected@{deviceConnected}}
+\index{deviceConnected@{deviceConnected}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{deviceConnected}{deviceConnected}}
+{\footnotesize\ttfamily \label{server_8ino_a5affc02c6814932fa2696bac53bc2598} 
+volatile bool device\+Connected = false}
+
+
+
+Flag indicating central connection status. 
+
+\Hypertarget{server_8ino_a9273c661647db23377faa8ccb10fc21a}\index{server.ino@{server.ino}!imuChar@{imuChar}}
+\index{imuChar@{imuChar}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{imuChar}{imuChar}}
+{\footnotesize\ttfamily \label{server_8ino_a9273c661647db23377faa8ccb10fc21a} 
+BLECharacteristic\texorpdfstring{$\ast$}{*} imu\+Char}
+
+
+
+Pointer to IMU characteristic. 
+
+\Hypertarget{server_8ino_a4c702b816cf82ea6518921edab262bd9}\index{server.ino@{server.ino}!server@{server}}
+\index{server@{server}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{server}{server}}
+{\footnotesize\ttfamily \label{server_8ino_a4c702b816cf82ea6518921edab262bd9} 
+BLEServer\texorpdfstring{$\ast$}{*} server}
+
+
+
+Pointer to BLE server object. 
+
+\Hypertarget{server_8ino_af4f8d8fb73988021e53cc1947864e12b}\index{server.ino@{server.ino}!xButtonSignalSemaphore@{xButtonSignalSemaphore}}
+\index{xButtonSignalSemaphore@{xButtonSignalSemaphore}!server.ino@{server.ino}}
+\doxysubsubsection{\texorpdfstring{xButtonSignalSemaphore}{xButtonSignalSemaphore}}
+{\footnotesize\ttfamily \label{server_8ino_af4f8d8fb73988021e53cc1947864e12b} 
+Semaphore\+Handle\+\_\+t x\+Button\+Signal\+Semaphore}
+
+
+
+Semaphore used to signal button events between tasks. 
+

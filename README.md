@@ -48,3 +48,6 @@ An **ESP32-S3 based AirTag-like tracking system** featuring **BLE communication,
 3. **Display** — Distance and motion status shown on LCD.  
 4. **Lost Mode** — Tracker sends command to AirTag to trigger buzzer.  
 5. **Re-lock** — Button resets RFID lock.
+
+
+📄 [Documentation](https://grgevansdwy.github.io/ESP-AirTag/)
